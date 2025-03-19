@@ -12,6 +12,7 @@ export default function Home() {
             This site allows you to graphically visualize your Spotify data.
           </h2>
         </div>
+
         <div className="mt-4">
           <p className="text-lg font-bold">Features include:</p>
           <ul className="text-base list-disc ml-8">
@@ -25,10 +26,12 @@ export default function Home() {
             <li>See the songs you&apos;ve historically skipped the most.</li>
           </ul>
         </div>
+
         <div className="mt-8">
           <div>
             <h3 className="text-2xl font-bold">How to get started:</h3>
           </div>
+
           <div className="mt-2 ml-4">
             <h4 className="text-lg font-bold">First</h4>
             <p>
@@ -49,11 +52,20 @@ export default function Home() {
             </p>
             <p>It might take a few days for Spotify to prepare your data.</p>
           </div>
+
           <div className="mt-2 ml-4">
             <h4 className="text-lg font-bold">Second</h4>
             <p>
               Upload the &apos;.zip&apos; files that you downloaded from Spotify
               to this website.
+            </p>
+          </div>
+
+          <div className="mt-2 ml-4">
+            <h4 className="text-lg font-bold">Third</h4>
+            <p>
+              Enjoy going through a beautiful and nostalgic trip of your
+              listening habits!
             </p>
           </div>
         </div>
