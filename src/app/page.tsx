@@ -1,75 +1,25 @@
+"use client";
+
+import { WelcomePage } from "./components/introduction";
+import { useState } from "react";
+import axios from "axios";
+
 export default function Home() {
-  return (
-    <main className="w-screen h-screen overflow-x-hidden bg-gray-700 flex">
-      <div className="m-auto">
-        <div>
-          <h1 className="text-4xl font-bold">
-            Welcome to the Spotify data visualizer site!
-          </h1>
-        </div>
-        <div className="mt-2">
-          <h2 className="text-2xl italic">
-            This site allows you to graphically visualize your Spotify data.
-          </h2>
-        </div>
+    const [file, setFile] = useState<File>();
+    const [progress, setProgress] = useState({ started: false, pc: 0 });
+    const [msg, setMsg] = useState<String | null>(null);
 
-        <div className="mt-4">
-          <p className="text-lg font-bold">Features include:</p>
-          <ul className="text-base list-disc ml-8">
-            <li>Seeing your most played songs ever.</li>
-            <li>Seeing your most listened to artists ever.</li>
-            <li>
-              Seeing your most listened to songs and artists for specific time
-              periods.
-            </li>
-            <li>See your search history.</li>
-            <li>See the songs you&apos;ve historically skipped the most.</li>
-          </ul>
-        </div>
-
-        <div className="mt-8">
-          <div>
-            <h3 className="text-2xl font-bold">How to get started:</h3>
-          </div>
-
-          <div className="mt-2 ml-4">
-            <h4 className="text-lg font-bold">First</h4>
-            <p>
-              Download your Spotify account data from
-              <a
-                href="https://www.spotify.com/us/account/privacy/"
-                target="_blank"
-                className="underline p-1"
-              >
-                Spotify&apos;s website
-              </a>
-              in your account privacy settings.
-            </p>
-            <p>(You need to be logged in to Spotify to access this page.)</p>
-            <p>
-              If you want the full experience, download both your &apos;Account
-              data&apos; and your &apos;Extended streaming history&apos;.
-            </p>
-            <p>It might take a few days for Spotify to prepare your data.</p>
-          </div>
-
-          <div className="mt-2 ml-4">
-            <h4 className="text-lg font-bold">Second</h4>
-            <p>
-              Upload the &apos;.zip&apos; files that you downloaded from Spotify
-              to this website.
-            </p>
-          </div>
-
-          <div className="mt-2 ml-4">
-            <h4 className="text-lg font-bold">Third</h4>
-            <p>
-              Enjoy going through a beautiful and nostalgic trip of your
-              listening habits!
-            </p>
-          </div>
-        </div>
-      </div>
-    </main>
-  );
+    return (
+        <main className="w-screen h-screen overflow-x-hidden bg-gray-700 flex">
+            {/*<WelcomePage />*/}
+            <form onSubmit={onSubmit}>
+                <input
+                    type="file"
+                    name="file"
+                    onChange={(e) => setFile(e.target.files?.[0])}
+                />
+                <input type="submit" value="Upload" />
+            </form>
+        </main>
+    );
 }
