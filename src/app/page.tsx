@@ -1,5 +1,3 @@
-import { Sidebar } from "./components/sidebar";
-
 export default function Home() {
   return (
     <main className="w-screen h-screen overflow-x-hidden bg-gray-700 flex">
