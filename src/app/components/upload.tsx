@@ -26,7 +26,7 @@ type SongList = {
     [key: string]: Song;
 };
 
-const processData = (
+export const processData = (
     songs: SongList,
     artists: ArtistList,
     jsonContents: any
@@ -89,9 +89,17 @@ const processData = (
     });
       */
     }
+
+    return sortedSongs;
 };
 
-export const ZipUpload = () => {
+export const ZipUpload = ({
+    uploaded,
+    data,
+}: {
+    uploaded: (value: boolean) => void;
+    data: (value: any) => void;
+}) => {
     const [jsonData, setJsonData] = useState<{ [key: string]: any }>({});
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -128,22 +136,33 @@ export const ZipUpload = () => {
             const artists: ArtistList = {};
             const songs: SongList = {};
 
-            setJsonData(jsonContents);
+            const sortedSongs = processData(songs, artists, jsonContents);
 
-            processData(songs, artists, jsonContents);
+            data(jsonContents);
+            uploaded(true);
         } catch (err) {
             console.error(err);
         }
     };
 
     return (
-        <div className="m-auto">
-            <input
-                type="file"
-                accept=".zip"
-                onChange={handleFileUpload}
-                className="p-2 border-2 w-auto"
-            />
+        <div className="mt-8">
+            <div>
+                <h3 className="text-2xl font-bold">
+                    Upload your Spotify data:
+                </h3>
+            </div>
+            <div className="mt-4">
+                <div className="m-auto">
+                    <input
+                        type="file"
+                        accept=".zip"
+                        onChange={handleFileUpload}
+                        className="p-2 border-2 w-auto"
+                    />
+                </div>
+                <div className="mt-2 ml-4"></div>
+            </div>
         </div>
     );
 };
