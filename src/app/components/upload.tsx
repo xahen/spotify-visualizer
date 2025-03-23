@@ -100,6 +100,7 @@ export const ZipUpload = ({
     uploaded: (value: boolean) => void;
     data: (value: any) => void;
 }) => {
+    // is this still necessary? now that i keep it in a new state in page.tsx
     const [jsonData, setJsonData] = useState<{ [key: string]: any }>({});
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,7 +139,10 @@ export const ZipUpload = ({
 
             const sortedSongs = processData(songs, artists, jsonContents);
 
+            // how do i make this work? i need to pass the parsed data back out to the main page state
             data(jsonContents);
+
+            // this works fine
             uploaded(true);
         } catch (err) {
             console.error(err);
