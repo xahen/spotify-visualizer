@@ -1,19 +1,23 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+import { AppProvider } from "@/context/AppContext";
+
 export const metadata: Metadata = {
-    title: "Spotify Data Visualizer",
-    description: "Coded by Oliver Borg",
+  title: "Spotify Data Visualizer",
+  description: "Coded by Oliver Borg",
 };
 
 export default function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
-            <body>{children}</body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body>
+        <AppProvider>{children}</AppProvider>
+      </body>
+    </html>
+  );
 }
