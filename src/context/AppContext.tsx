@@ -12,7 +12,7 @@ type SongDataState = {
 
 type AppContextType = {
   songData: SongDataState;
-  setSongData: React.Dispatch<React.SetStateAction<AppState>>;
+  setSongData: React.Dispatch<React.SetStateAction<SongDataState>>;
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
