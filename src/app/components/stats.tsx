@@ -45,36 +45,51 @@ export const StatsPage = () => {
 
     return (
         <div className="m-auto">
-            <button
-                className="border-3 p-3 rounded-4xl text-2xl hover:opacity-50 m-2"
-                onClick={() => {
-                    for (let x in sortedByListens) {
-                        console.log(sortedByListens[x]);
-                    }
-                }}
-            >
-                songs sorted by listens
-            </button>
-            <button
-                className="border-3 p-3 rounded-4xl text-2xl hover:opacity-50 m-2"
-                onClick={() => {
-                    for (let x in sortedBySkips) {
-                        console.log(sortedBySkips[x]);
-                    }
-                }}
-            >
-                songs sorted by skips
-            </button>
-            <button
-                className="border-3 p-3 rounded-4xl text-2xl hover:opacity-50 m-2"
-                onClick={() => {
-                    for (let x in sortedByMS) {
-                        console.log(sortedByMS[x]);
-                    }
-                }}
-            >
-                songs sorted by ms
-            </button>
+            <div>
+                <button
+                    className="border-3 p-3 rounded-4xl text-2xl hover:opacity-50 m-2"
+                    onClick={() => {
+                        for (let x in sortedByListens) {
+                            console.log(sortedByListens[x]);
+                        }
+                    }}
+                >
+                    songs sorted by listens
+                </button>
+                <button
+                    className="border-3 p-3 rounded-4xl text-2xl hover:opacity-50 m-2"
+                    onClick={() => {
+                        for (let x in sortedBySkips) {
+                            console.log(sortedBySkips[x]);
+                        }
+                    }}
+                >
+                    songs sorted by skips
+                </button>
+                <button
+                    className="border-3 p-3 rounded-4xl text-2xl hover:opacity-50 m-2"
+                    onClick={() => {
+                        for (let x in sortedByMS) {
+                            console.log(sortedByMS[x]);
+                        }
+                    }}
+                >
+                    songs sorted by ms
+                </button>
+            </div>
+            <div>
+                <div>
+                    <h2 className="text-xl">top songs</h2>
+                </div>
+                <div>
+                    {sortedByListens.map((song) => (
+                        <p className="ml-4" key={song[0]}>
+                            {song[1].artist} - {song[1].name}{" "}
+                            {song[1].times_listened}
+                        </p>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 };
