@@ -52,12 +52,14 @@ export const StatsPage = () => {
     const sortedByMS = sortByMS(songData);
 
     const artistByListens = sortArtistByListens(artistData);
+    const artistBySkips = sortBySkips(artistData);
+    const artistByMS = sortByMS(artistData);
 
     return (
         <div className="m-auto">
-            <div>
+            <div className="flex justify-between">
                 <button
-                    className="border-3 p-3 rounded-4xl text-2xl hover:opacity-50 m-2"
+                    className="border-3 p-3 rounded-4xl text-xl hover:opacity-50 m-2"
                     onClick={() => {
                         for (let x in sortedByListens) {
                             console.log(sortedByListens[x]);
@@ -67,7 +69,7 @@ export const StatsPage = () => {
                     songs sorted by listens
                 </button>
                 <button
-                    className="border-3 p-3 rounded-4xl text-2xl hover:opacity-50 m-2"
+                    className="border-3 p-3 rounded-4xl text-xl hover:opacity-50 m-2"
                     onClick={() => {
                         for (let x in sortedBySkips) {
                             console.log(sortedBySkips[x]);
@@ -77,7 +79,7 @@ export const StatsPage = () => {
                     songs sorted by skips
                 </button>
                 <button
-                    className="border-3 p-3 rounded-4xl text-2xl hover:opacity-50 m-2"
+                    className="border-3 p-3 rounded-4xl text-xl hover:opacity-50 m-2"
                     onClick={() => {
                         for (let x in sortedByMS) {
                             console.log(sortedByMS[x]);
@@ -86,15 +88,45 @@ export const StatsPage = () => {
                 >
                     songs sorted by ms
                 </button>
+                <button
+                    className="border-3 p-3 rounded-4xl text-xl hover:opacity-50 m-2"
+                    onClick={() => {
+                        for (let x in artistByListens) {
+                            console.log(artistByListens[x]);
+                        }
+                    }}
+                >
+                    artists sorted by listens
+                </button>
+                <button
+                    className="border-3 p-3 rounded-4xl text-xl hover:opacity-50 m-2"
+                    onClick={() => {
+                        for (let x in artistBySkips) {
+                            console.log(artistBySkips[x]);
+                        }
+                    }}
+                >
+                    artist sorted by skips
+                </button>
+                <button
+                    className="border-3 p-3 rounded-4xl text-xl hover:opacity-50 m-2"
+                    onClick={() => {
+                        for (let x in artistByMS) {
+                            console.log(artistByMS[x]);
+                        }
+                    }}
+                >
+                    artist sorted by ms
+                </button>
             </div>
-            <div className="flex justify-">
+            <div className="flex mt-4">
                 <div className="ml-25">
                     <div>
-                        <h2 className="text-xl">top songs</h2>
+                        <h2 className="text-3xl">top songs</h2>
                     </div>
-                    <div>
+                    <div className="mt-2">
                         {sortedByListens.map((song) => (
-                            <p className="ml-4" key={song[0]}>
+                            <p className="ml-4 text-base" key={song[0]}>
                                 {song[1].artist} - {song[1].name} (
                                 {song[1].times_listened})
                             </p>
@@ -103,11 +135,11 @@ export const StatsPage = () => {
                 </div>
                 <div className="mr-25">
                     <div>
-                        <h2 className="text-xl">top artists</h2>
+                        <h2 className="text-3xl">top artists</h2>
                     </div>
-                    <div>
+                    <div className="mt-2">
                         {artistByListens.map((artist) => (
-                            <p className="ml-4" key={artist[0]}>
+                            <p className="ml-4 text-base" key={artist[0]}>
                                 {artist[1].name} ({artist[1].songs_played})
                             </p>
                         ))}
