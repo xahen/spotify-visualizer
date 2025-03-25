@@ -27,7 +27,7 @@ type SongList = {
     [key: string]: Song;
 };
 
-export const processData = (
+const processData = (
     songs: SongList,
     artists: ArtistList,
     jsonContents: any
@@ -36,22 +36,20 @@ export const processData = (
         for (const entry of data) {
             let songName = entry["master_metadata_track_name"];
             let artistName = entry["master_metadata_album_artist_name"];
+            let idName = artistName + " - " + songName;
 
             // if 2 artists have a song with the exact same name, only the first one gets added
             // i need to give each song a unique id? or maybe just store it in an array to begin with
             // but then i'd have to iterate through it for each song x.x
             if (songName !== null && artistName !== null) {
-                if (
-                    songName in songs &&
-                    songs[songName].artist === artistName
-                ) {
-                    songs[songName].ms_listened += entry["ms_played"];
-                    songs[songName].times_listened += 1;
+                if (idName in songs) {
+                    songs[idName].ms_listened += entry["ms_played"];
+                    songs[idName].times_listened += 1;
                     if (entry["skipped"]) {
-                        songs[songName].times_skipped += 1;
+                        songs[idName].times_skipped += 1;
                     }
                 } else {
-                    songs[songName] = {
+                    songs[idName] = {
                         name: songName,
                         artist: artistName,
                         times_listened: 1,
@@ -95,7 +93,7 @@ export const processData = (
     });
   */
 
-    return songs;
+    return [songs, artists];
 };
 
 export const ZipUpload = ({
@@ -105,7 +103,8 @@ export const ZipUpload = ({
 }) => {
     // is this still necessary? now that i keep it in a new state in page.tsx
     const [jsonData, setJsonData] = useState<{ [key: string]: any }>({});
-    const { songData, setSongData } = useAppContext();
+
+    const { setSongData, setArtistData } = useAppContext();
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -141,10 +140,14 @@ export const ZipUpload = ({
             const artists: ArtistList = {};
             const songs: SongList = {};
 
-            const processedSongs = processData(songs, artists, jsonContents);
+            const [processedSongs, processedArtists] = processData(
+                songs,
+                artists,
+                jsonContents
+            );
 
-            // how do i make this work? i need to pass the parsed data back out to the main page state
-            setSongData(processedSongs);
+            setSongData(songs);
+            setArtistData(artists);
 
             // this works fine
             uploaded(true);
