@@ -36,12 +36,22 @@ const sortByMS = (songs: any) => {
     return sortedSongs;
 };
 
+const sortArtistByListens = (songs: any) => {
+    const sortedSongs = Object.entries(songs).sort(
+        ([, a], [, b]) => b.songs_played - a.songs_played
+    );
+
+    return sortedSongs;
+};
+
 export const StatsPage = () => {
-    const { songData } = useAppContext();
+    const { songData, artistData } = useAppContext();
 
     const sortedByListens = sortByListens(songData);
     const sortedBySkips = sortBySkips(songData);
     const sortedByMS = sortByMS(songData);
+
+    const artistByListens = sortArtistByListens(artistData);
 
     return (
         <div className="m-auto">
@@ -77,17 +87,31 @@ export const StatsPage = () => {
                     songs sorted by ms
                 </button>
             </div>
-            <div>
+            <div className="flex justify-between">
                 <div>
-                    <h2 className="text-xl">top songs</h2>
+                    <div>
+                        <h2 className="text-xl">top songs</h2>
+                    </div>
+                    <div>
+                        {sortedByListens.map((song) => (
+                            <p className="ml-4" key={song[0]}>
+                                {song[1].artist} - {song[1].name}{" "}
+                                {song[1].times_listened}
+                            </p>
+                        ))}
+                    </div>
                 </div>
                 <div>
-                    {sortedByListens.map((song) => (
-                        <p className="ml-4" key={song[0]}>
-                            {song[1].artist} - {song[1].name}{" "}
-                            {song[1].times_listened}
-                        </p>
-                    ))}
+                    <div>
+                        <h2 className="text-xl">top artists</h2>
+                    </div>
+                    <div>
+                        {artistByListens.map((artist) => (
+                            <p className="ml-4" key={artist[0]}>
+                                {artist[1].name} {artist[1].songs_played}
+                            </p>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
