@@ -3,6 +3,7 @@
 import { useState } from "react";
 import JSZip from "jszip";
 import { useAppContext } from "@/context/AppContext";
+import { FaSpinner } from "react-icons/fa6";
 
 type Artist = {
   name: string;
@@ -104,9 +105,11 @@ export const ZipUpload = ({
   // is this still necessary? now that i keep it in a new state in page.tsx
   const [jsonData, setJsonData] = useState<{ [key: string]: any }>({});
 
+  const [loading, setLoading] = useState<boolean>(false);
   const { setSongData, setArtistData } = useAppContext();
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoading(true);
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -152,6 +155,23 @@ export const ZipUpload = ({
       console.error(err);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="mt-8">
+        <div>
+          <h3 className="text-2xl font-bold">Upload your Spotify data:</h3>
+        </div>
+        <div className="mt-4 ml-4">
+          <div className="flex">
+            <FaSpinner size={25} className="animate-spin mt-1" />
+            <p className="text-2xl ml-4">Loading...</p>
+          </div>
+          <div className="mt-2 ml-4"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-8">
