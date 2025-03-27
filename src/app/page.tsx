@@ -9,15 +9,13 @@ export default function Home() {
   const [uploaded, setUploaded] = useState<boolean>(false);
 
   return (
-    <main className="flex flex-row w-screen">
-      <div className="w-full h-screen overflow-x-hidden bg-slate-700 flex p-4">
-        {!uploaded && (
-          <div className="m-auto">
-            <WelcomePage /> <ZipUpload uploaded={setUploaded} />
-          </div>
-        )}
-        {uploaded && <StatsPage />}
-      </div>
-    </main>
+    <div className="w-full h-screen overflow-x-hidden bg-slate-700 flex p-4">
+      {!uploaded && (
+        <div className="m-auto">
+          <WelcomePage /> <ZipUpload uploaded={setUploaded} />
+        </div>
+      )}
+      {uploaded && <StatsPage />}
+    </div>
   );
 }
