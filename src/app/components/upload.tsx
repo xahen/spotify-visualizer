@@ -38,7 +38,7 @@ const processData = (
       let songName = entry["master_metadata_track_name"];
       let artistName = entry["master_metadata_album_artist_name"];
       let idName = artistName + " - " + songName;
-      
+
       if (songName !== null && artistName !== null) {
         if (idName in songs) {
           songs[idName].ms_listened += entry["ms_played"];

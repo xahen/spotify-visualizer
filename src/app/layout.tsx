@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { AppProvider } from "@/context/AppContext";
+import { Sidebar } from "./components/sidebar";
 
 export const metadata: Metadata = {
   title: "Spotify Data Visualizer",
@@ -16,7 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AppProvider>{children}</AppProvider>
+        <div className="flex">
+          <Sidebar />
+          <AppProvider>{children}</AppProvider>
+        </div>
       </body>
     </html>
   );

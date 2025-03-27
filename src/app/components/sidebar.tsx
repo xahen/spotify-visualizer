@@ -1,26 +1,30 @@
 "use client";
 
 import { useState } from "react";
+import { FaBars, FaX, FaHouse, FaChartLine } from "react-icons/fa6";
 
 export const Sidebar = () => {
-    const [expanded, setExpanded] = useState(false);
-    return (
-        <nav className="w-128 h-128">
-            <div
-                className={
-                    (expanded ? "w-64" : "w-12") +
-                    " h-screen bg-spotifygreen transition-all duration-400"
-                }
-            >
-                <button
-                    onClick={() =>
-                        expanded ? setExpanded(false) : setExpanded(true)
-                    }
-                >
-                    {expanded && <p>close</p>}
-                    {!expanded && <p>open</p>}
-                </button>
-            </div>
-        </nav>
-    );
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div
+      className={`h-screen bg-gray-900 flex flex-col transition-all duration-250 ${
+        expanded ? "w-64" : "w-16"
+      } `}
+    >
+      <div className="top-0 h-16 w-16 flex">
+        <div className="m-auto">
+          {!expanded && <FaBars size={35} onClick={() => setExpanded(true)} />}
+          {expanded && <FaX size={35} onClick={() => setExpanded(false)} />}
+        </div>
+      </div>
+      <div className="h-full w-16 flex flex-col">
+        <div className="m-auto">
+          <FaHouse size={35} />
+        </div>
+        <div className="m-auto">
+          <FaChartLine size={35} />
+        </div>
+      </div>
+    </div>
+  );
 };
