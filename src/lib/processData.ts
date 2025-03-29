@@ -21,12 +21,13 @@ type SongList = {
   [key: string]: Song;
 };
 
+// iterates through the entries of the fileContents object, organizes relevant data into the songs and artists arrays
 export const processData = (
   songs: SongList,
   artists: ArtistList,
-  jsonContents: any
+  fileContents: any
 ) => {
-  Object.entries(jsonContents).forEach(([filename, data]: [string, any]) => {
+  Object.entries(fileContents).forEach(([filename, data]: [string, any]) => {
     for (const entry of data) {
       let songName = entry["master_metadata_track_name"];
       let artistName = entry["master_metadata_album_artist_name"];
@@ -66,21 +67,4 @@ export const processData = (
       }
     }
   });
-
-  /*
-    const sortedSongs = Object.fromEntries(
-        Object.entries(songs).sort(
-            (a: [string, Song], b: [string, Song]) =>
-                b[1].times_listened - a[1].times_listened
-        )
-    ) as SongList;
-    
-  Object.entries(sortedSongs).forEach(([key, value]: [string, Song]) => {
-    console.log(value);
-  });
-
-    Object.entries(artists).forEach(([key, value]) => {
-      console.log(value);
-    });
-  */
 };
