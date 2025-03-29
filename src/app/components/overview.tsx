@@ -53,7 +53,7 @@ export const StatsOverview = () => {
       </section>
       <section className="flex m-auto">
         <div className="bg-gray-500 m-4 p-4 w-[82vw] h-[40vh] rounded-3xl">
-          {years} years
+          {Math.floor(years)} {Math.floor(years) > 1 ? "years" : "year"}
         </div>
       </section>
     </>
