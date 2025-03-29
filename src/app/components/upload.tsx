@@ -6,14 +6,12 @@ import { useAppContext } from "@/context/AppContext";
 import { FaSpinner } from "react-icons/fa6";
 
 import { processData } from "@/lib/processData";
+import { useRouter } from "next/navigation";
 
-export const ZipUpload = ({
-  uploaded,
-}: {
-  uploaded: (value: boolean) => void;
-}) => {
+export const ZipUpload = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { setSongData, setArtistData } = useAppContext();
+  const router = useRouter();
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
@@ -56,7 +54,7 @@ export const ZipUpload = ({
       setSongData(songs);
       setArtistData(artists);
 
-      uploaded(true);
+      router.push("/stats");
     } catch (err) {
       console.error(err);
     }
