@@ -18,7 +18,6 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <main className="flex flex-row w-screen">
-          <Sidebar />
           <AppProvider>{children}</AppProvider>
         </main>
       </body>
