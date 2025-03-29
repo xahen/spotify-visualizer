@@ -1,27 +1,17 @@
 "use client";
 
 import { useAppContext } from "@/context/AppContext";
-
-const sortSongByListens = (songs: any) => {
-  const sortedSongs = Object.entries(songs).sort(
-    ([, a], [, b]) => b.times_listened - a.times_listened
-  );
-
-  return sortedSongs;
-};
-
-const sortArtistByListens = (songs: any) => {
-  const sortedSongs = Object.entries(songs).sort(
-    ([, a], [, b]) => b.songs_played - a.songs_played
-  );
-
-  return sortedSongs;
-};
+import {
+  sortSongByListens,
+  sortArtistByListens,
+  totalTimeListened,
+} from "@/lib/datamanagement";
 
 export const StatsOverview = () => {
   const { songData, artistData } = useAppContext();
   const sortedSongs = sortSongByListens(songData);
   const sortedArtists = sortArtistByListens(artistData);
+  const timeListened = totalTimeListened(songData);
 
   console.log(sortedSongs);
   // summary cards

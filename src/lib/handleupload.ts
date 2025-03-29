@@ -33,7 +33,7 @@ const processData = (
   fileContents: any
 ) => {
   console.log(dayjs("2024-04-18T13:45:44Z"));
-  Object.entries(fileContents).forEach(([filename, data]: [string, any]) => {
+  Object.entries(fileContents).forEach(([, data]: [string, any]) => {
     for (const entry of data) {
       let songName = entry["master_metadata_track_name"];
       let artistName = entry["master_metadata_album_artist_name"];
