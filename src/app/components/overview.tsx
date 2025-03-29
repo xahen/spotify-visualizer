@@ -11,9 +11,8 @@ export const StatsOverview = () => {
   const { songData, artistData } = useAppContext();
   const sortedSongs = sortSongByListens(songData);
   const sortedArtists = sortArtistByListens(artistData);
-  const timeListened = totalTimeListened(songData);
+  const years = totalTimeListened(songData);
 
-  console.log(sortedSongs);
   // summary cards
   // 2 at the top? - top songs and top artists
   return (
@@ -53,7 +52,9 @@ export const StatsOverview = () => {
         </div>
       </section>
       <section className="flex m-auto">
-        <div className="bg-gray-500 m-4 w-[82vw] h-[30vh] rounded-3xl"></div>
+        <div className="bg-gray-500 m-4 p-2 w-[82vw] h-[30vh] rounded-3xl">
+          {years} years
+        </div>
       </section>
     </>
   );

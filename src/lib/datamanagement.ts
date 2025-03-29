@@ -20,5 +20,7 @@ export const totalTimeListened = (songs: any) => {
     timeListened += data.ms_listened;
   });
 
-  return timeListened;
+  let years = timeListened / 3.154e10;
+
+  return years;
 };
