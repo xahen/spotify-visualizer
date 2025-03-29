@@ -35,22 +35,29 @@ const handleFileUpload = async (
   try {
     const zip = new JSZip();
     const contents = await zip.loadAsync(file);
-    const jsonContents: { [key: string]: any } = {};
+    const fileContents: { [key: string]: any } = {};
 
-    for (const [filename, content] of Object.entries(contents.files)) {
-      if (!content.dir) {
+    const loadFiles = Object.entries(contents.files)
+      .filter(
+        ([filename, content]) => !content.dir && filename.endsWith(".json")
+      )
+      .map(async ([filename, content]) => {
         const text = await content.async("text");
 
-        if (filename.endsWith(".json")) {
-          try {
-            const parsedJson = JSON.parse(text);
-            jsonContents[filename] = parsedJson;
-          } catch (jsonError) {
-            console.error(`Error parsing JSON file ${filename}:`, jsonError);
-          }
+        try {
+          return { filename, data: JSON.parse(text) };
+        } catch (fileError) {
+          console.error(`Error parsing file ${filename}:`, fileError);
+          return null;
         }
+      });
+
+    const fileResults = await Promise.all(loadFiles);
+    fileResults.forEach((result) => {
+      if (result) {
+        fileContents[result.filename] = result.data;
       }
-    }
+    });
 
     const artists = {};
     const songs = {};
@@ -58,7 +65,7 @@ const handleFileUpload = async (
     const [processedSongs, processedArtists] = processData(
       songs,
       artists,
-      jsonContents
+      fileContents
     );
 
     setSongData(songs);
