@@ -83,6 +83,4 @@ export const processData = (
       console.log(value);
     });
   */
-
-  return [songs, artists];
 };

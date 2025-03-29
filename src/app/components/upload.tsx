@@ -62,11 +62,7 @@ const handleFileUpload = async (
     const artists = {};
     const songs = {};
 
-    const [processedSongs, processedArtists] = processData(
-      songs,
-      artists,
-      fileContents
-    );
+    processData(songs, artists, fileContents);
 
     setSongData(songs);
     setArtistData(artists);
