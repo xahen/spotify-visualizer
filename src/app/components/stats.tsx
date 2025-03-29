@@ -1,3 +1,5 @@
+"use client";
+
 import { useAppContext } from "@/context/AppContext";
 
 type Song = {

@@ -8,57 +8,70 @@ import { FaSpinner } from "react-icons/fa6";
 import { processData } from "@/lib/processData";
 import { useRouter } from "next/navigation";
 
+const handleFileUpload = async (
+  e: React.ChangeEvent<HTMLInputElement>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  setSongData: (data: any) => void,
+  setArtistData: (data: any) => void,
+  router: any
+) => {
+  const file = e.target.files?.[0];
+
+  setLoading(true);
+
+  if (!file) {
+    setLoading(false);
+    return;
+  }
+  if (!file.name.endsWith(".zip")) {
+    setLoading(false);
+    return;
+  }
+
+  try {
+    const zip = new JSZip();
+    const contents = await zip.loadAsync(file);
+    const jsonContents: { [key: string]: any } = {};
+
+    for (const [filename, content] of Object.entries(contents.files)) {
+      if (!content.dir) {
+        const text = await content.async("text");
+
+        if (filename.endsWith(".json")) {
+          try {
+            const parsedJson = JSON.parse(text);
+            jsonContents[filename] = parsedJson;
+          } catch (jsonError) {
+            console.error(`Error parsing JSON file ${filename}:`, jsonError);
+          }
+        }
+      }
+    }
+
+    const artists = {};
+    const songs = {};
+
+    const [processedSongs, processedArtists] = processData(
+      songs,
+      artists,
+      jsonContents
+    );
+
+    setSongData(songs);
+    setArtistData(artists);
+
+    router.push("/stats");
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
+
 export const ZipUpload = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { setSongData, setArtistData } = useAppContext();
   const router = useRouter();
-
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLoading(true);
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (!file.name.endsWith(".zip")) {
-      return;
-    }
-
-    try {
-      const zip = new JSZip();
-      const contents = await zip.loadAsync(file);
-      const jsonContents: { [key: string]: any } = {};
-
-      for (const [filename, content] of Object.entries(contents.files)) {
-        if (!content.dir) {
-          const text = await content.async("text");
-
-          if (filename.endsWith(".json")) {
-            try {
-              const parsedJson = JSON.parse(text);
-              jsonContents[filename] = parsedJson;
-            } catch (jsonError) {
-              console.error(`Error parsing JSON file ${filename}:`, jsonError);
-            }
-          }
-        }
-      }
-
-      const artists: ArtistList = {};
-      const songs: SongList = {};
-
-      const [processedSongs, processedArtists] = processData(
-        songs,
-        artists,
-        jsonContents
-      );
-
-      setSongData(songs);
-      setArtistData(artists);
-
-      router.push("/stats");
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   if (loading) {
     return (
@@ -87,7 +100,15 @@ export const ZipUpload = () => {
           <input
             type="file"
             accept=".zip"
-            onChange={handleFileUpload}
+            onChange={(e) =>
+              handleFileUpload(
+                e,
+                setLoading,
+                setSongData,
+                setArtistData,
+                router
+              )
+            }
             className="p-2 border-2 w-auto"
           />
         </div>

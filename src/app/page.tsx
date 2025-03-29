@@ -1,7 +1,7 @@
 "use client";
 
-import { WelcomePage } from "./components/introduction";
-import { ZipUpload } from "./components/upload";
+import { WelcomePage } from "@/app/components/introduction";
+import { ZipUpload } from "@/app/components/upload";
 
 export default function Home() {
   return (
