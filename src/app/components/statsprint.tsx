@@ -30,7 +30,7 @@ const sortArtistByListens = (songs: any) => {
   return sortedSongs;
 };
 
-export const StatsPage = () => {
+export const StatsPrint = () => {
   const { songData, artistData } = useAppContext();
 
   const sortedByListens = sortSongByListens(songData);
