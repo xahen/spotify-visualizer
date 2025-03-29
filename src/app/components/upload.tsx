@@ -23,7 +23,6 @@ export const ZipUpload = () => {
             <FaSpinner size={25} className="animate-spin mt-1" />
             <p className="text-2xl ml-4">Loading...</p>
           </div>
-          <div className="mt-2 ml-4"></div>
         </div>
       </div>
     );
@@ -51,7 +50,6 @@ export const ZipUpload = () => {
             className="p-2 border-2 w-auto"
           />
         </div>
-        <div className="mt-2 ml-4"></div>
       </div>
     </div>
   );
