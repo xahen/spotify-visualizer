@@ -8,6 +8,10 @@ import { FaSpinner } from "react-icons/fa6";
 import { processData } from "@/lib/processData";
 import { useRouter } from "next/navigation";
 
+// takes the uploaded .zip file as an event, and then changes the global song and artist states, so the data can be accessed anywhere
+// tries to iterate through the files in the .zip folder, then (if it's a json file) saves the contents of the file in the jsonContents object
+// then processes the data to organize it by calling the processData function in lib
+// finally it pushes the client to the '/stats' route
 const handleFileUpload = async (
   e: React.ChangeEvent<HTMLInputElement>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
