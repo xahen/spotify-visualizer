@@ -20,11 +20,11 @@ export const StatsOverview = () => {
     <>
       <section className="flex flex-row m-auto">
         {/* top songs */}
-        <div className="bg-gray-500 m-4 p-2 w-[40vw] h-[35vh] rounded-3xl overflow-hidden">
+        <div className="bg-gray-500 m-4 p-4 w-[40vw] h-[35vh] rounded-3xl overflow-hidden">
           <div>
             <h1 className="text-2xl text-center">Your top songs</h1>
           </div>
-          <div className="mt-4 ml-4">
+          <div className="mt-4 ml-2">
             <ul className="list-decimal list-inside">
               {sortedSongs.slice(0, 10).map((song) => (
                 <li key={song[0]}>
@@ -36,11 +36,11 @@ export const StatsOverview = () => {
         </div>
 
         {/* top artists */}
-        <div className="bg-gray-500 m-4 p-2 w-[40vw] h-[35vh] rounded-3xl overflow-hidden">
+        <div className="bg-gray-500 m-4 p-4 w-[40vw] h-[35vh] rounded-3xl overflow-hidden">
           <div>
             <h1 className="text-2xl text-center">Your top artists</h1>
           </div>
-          <div className="mt-4 ml-4">
+          <div className="mt-4 ml-2">
             <ul className="list-decimal list-inside">
               {sortedArtists.slice(0, 10).map((artist) => (
                 <li key={artist[0]}>
@@ -52,7 +52,7 @@ export const StatsOverview = () => {
         </div>
       </section>
       <section className="flex m-auto">
-        <div className="bg-gray-500 m-4 p-2 w-[82vw] h-[30vh] rounded-3xl">
+        <div className="bg-gray-500 m-4 p-4 w-[82vw] h-[40vh] rounded-3xl">
           {years} years
         </div>
       </section>
