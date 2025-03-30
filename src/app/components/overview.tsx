@@ -1,17 +1,140 @@
 "use client";
 
+import dayjs from "dayjs";
+
+import { useState, useRef, useMemo, useEffect } from "react";
+// import the use of global states
 import { useAppContext } from "@/context/AppContext";
+// import all the needed data management functions
 import {
   sortSongByListens,
   sortArtistByListens,
   totalTimeListened,
+  aggregateData,
+  calculateYearlyCount,
+  calculateMonthlyCount,
+  calculateDailyCount,
 } from "@/lib/datamanagement";
+import { NestedAggregation } from "@/lib/types";
+// import chartjs and other related things
+// do i need to import all of these? or can i find a way around it
+// seems kind of stupid
+import {
+  Chart as ChartJS,
+  defaults,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar, getElementAtEvent } from "react-chartjs-2";
+import { monthToNumber } from "@/lib/data";
+
+// set default chartjs options for better visuals
+defaults.maintainAspectRatio = false;
+defaults.responsive = true;
+defaults.color = "#FFFFFF";
+//defaults.backgroundColor = "rgba(255, 255, 255, 0.2)";
+defaults.borderColor = "rgba(255, 255, 255, 0.2)";
+
+// i needed this to make it work - but i want to find a way around it
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 export const StatsOverview = () => {
-  const { songData, artistData } = useAppContext();
+  // global states
+  const { songData, artistData, listeningEvents } = useAppContext();
+
+  const [chartData, setChartData] = useState<{
+    labels: string[];
+    dataPoints: number[];
+  }>({ labels: [], dataPoints: [] });
+  const [monthData, setMonthData] = useState<{
+    labels: string[];
+    dataPoints: number[];
+  }>({ labels: [], dataPoints: [] });
+
+  const chartRef = useRef<any>(null);
+  const [barState, setBarState] = useState<string>("year");
+  const [trackYear, setTrackYear] = useState<string>("");
+
+  // organizing data from all the data management functions
   const sortedSongs = sortSongByListens(songData);
   const sortedArtists = sortArtistByListens(artistData);
   const [years, days, hours, minutes, seconds] = totalTimeListened(songData);
+
+  // maybe give this a more descriptive name?
+  // it aggregates the listeningEvents array to a collection of objects
+  // the keys are the date and the values are the count (songs played)
+  const aggregatedData = aggregateData(listeningEvents);
+
+  // specify it to every year
+  const yearlyCount = calculateYearlyCount(aggregatedData);
+
+  useEffect(() => {
+    setChartData(yearlyCount);
+  }, []);
+
+  // specify it to every month in a specific year
+  //const monthlyCount = calculateMonthlyCount(aggregatedData, "2023");
+
+  // specify it to every day in a specific month in a specific year
+  //const dailyCount = calculateDailyCount(aggregatedData, "2023", "03");
+
+  const handleBarClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!chartRef.current) return;
+
+    const elements = getElementAtEvent(chartRef.current, event);
+
+    if (elements.length > 0) {
+      const index = elements[0].index;
+      console.log("Clicked on:", chartData.labels[index]);
+
+      if (barState === "year") {
+        const monthlyCount = calculateMonthlyCount(
+          aggregatedData,
+          chartData.labels[index]
+        );
+        setChartData(monthlyCount);
+        setBarState("month");
+        setTrackYear(chartData.labels[index]);
+        setMonthData(monthlyCount);
+      } else if (barState === "month") {
+        const monthNumber = monthToNumber[chartData.labels[index]];
+        const dailyCount = calculateDailyCount(
+          aggregatedData,
+          trackYear,
+          monthNumber
+        );
+        setChartData(dailyCount);
+        setBarState("day");
+      }
+    }
+  };
+
+  const backButton = () => {
+    if (barState === "month") {
+      setBarState("year");
+      setChartData(yearlyCount);
+    } else if (barState === "day") {
+      setBarState("month");
+      setChartData(monthData);
+    }
+  };
+
+  const barData = useMemo(
+    () => ({
+      labels: chartData.labels,
+      datasets: [
+        {
+          label: "Plays",
+          data: chartData.dataPoints,
+          backgroundColor: "#1ed760",
+        },
+      ],
+    }),
+    [chartData]
+  );
 
   // summary cards
   // 2 at the top? - top songs and top artists
@@ -20,26 +143,30 @@ export const StatsOverview = () => {
     <>
       <section className="flex flex-row m-auto">
         {/* top songs */}
-        <div className="bg-gray-500 m-4 p-4 w-[40vw] h-[35vh] rounded-3xl overflow-hidden">
-          <h1 className="text-2xl text-center">Your top songs</h1>
+        <div className="bg-spotifyblack m-4 p-4 w-[40vw] h-[35vh] rounded-3xl overflow-hidden">
+          <h1 className="text-2xl text-center text-spotifygreen">
+            Your top songs
+          </h1>
 
-          <ul className="mt-4 ml-4 list-decimal list-inside">
+          <ul className="mt-4 ml-4 list-decimal list-inside marker:text-spotifygreen">
             {sortedSongs.slice(0, 10).map((song) => (
-              <li key={song[0]}>
-                {song[1].artist} - {song[1].name} ({song[1].times_listened})
+              <li key={song.name}>
+                {song.artist} - {song.name} ({song.times_listened})
               </li>
             ))}
           </ul>
         </div>
 
         {/* top artists */}
-        <div className="bg-gray-500 m-4 p-4 w-[40vw] h-[35vh] rounded-3xl overflow-hidden">
-          <h1 className="text-2xl text-center">Your top artists</h1>
+        <div className="bg-spotifyblack m-4 p-4 w-[40vw] h-[35vh] rounded-3xl overflow-hidden">
+          <h1 className="text-2xl text-center text-spotifygreen">
+            Your top artists
+          </h1>
 
-          <ul className="mt-4 ml-4 list-decimal list-inside">
+          <ul className="mt-4 ml-4 list-decimal list-inside marker:text-spotifygreen">
             {sortedArtists.slice(0, 10).map((artist) => (
-              <li key={artist[0]}>
-                {artist[1].name} ({artist[1].songs_played})
+              <li key={artist.name}>
+                {artist.name} ({artist.songs_played})
               </li>
             ))}
           </ul>
@@ -47,9 +174,29 @@ export const StatsOverview = () => {
       </section>
 
       {/* total listening time */}
-      <section className="m-auto bg-gray-500 p-4 w-[82vw] h-[40vh] rounded-3xl">
-        <h1 className="text-2xl text-center">Your total listening time</h1>
-        <h2 className="text-lg">
+      <section className="m-auto bg-spotifyblack p-4 w-[82vw] h-[45vh] rounded-3xl">
+        <div className="relative w-full">
+          {(barState === "month" || barState === "day") && (
+            <button
+              className="absolute -top-1 border-2 border-spotifygreen px-2 py-0.5 text-2xl rounded-3xl hover:bg-white/30"
+              onClick={backButton}
+            >
+              Back
+            </button>
+          )}
+          <h1 className="text-2xl text-center text-spotifygreen">
+            Your total listening time
+          </h1>
+        </div>
+        <div className="h-[80%] mt-2">
+          {/* songs played bar chart */}
+          {/* find a way to change between yearly and monthly bar charts */}
+          <Bar ref={chartRef} data={barData} onClick={handleBarClick} />
+        </div>
+
+        {/* fairly convoluted implementation */}
+        {/* renders total listening time with all factors accounted for */}
+        <h2 className="text-lg mt-4 text-center text-spotifygreen">
           {years > 0 ? (years > 1 ? years + " years" : years + " year") : null}{" "}
           {days > 0 ? (days > 1 ? days + " days" : days + " day") : null}{" "}
           {hours > 0 ? (hours > 1 ? hours + " hours" : hours + " hour") : null}{" "}

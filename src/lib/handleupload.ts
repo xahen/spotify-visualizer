@@ -1,38 +1,15 @@
 import JSZip from "jszip";
-import dayjs from "dayjs";
 
-type Artist = {
-  name: string;
-  songs_played: number;
-  ms_listened: number;
-  times_skipped: number;
-  timestamps: [{}];
-};
-
-type ArtistList = {
-  [key: string]: Artist;
-};
-
-type Song = {
-  name: string;
-  artist: string;
-  times_listened: number;
-  ms_listened: number;
-  times_skipped: number;
-  timestamps: [{}];
-};
-
-type SongList = {
-  [key: string]: Song;
-};
+import { ArtistList, SongList, ListeningEvent } from "@/lib/types";
 
 // iterates through the entries of the fileContents object, organizes relevant data into the songs and artists arrays
 const processData = (
   songs: SongList,
   artists: ArtistList,
+  listeningEvents: ListeningEvent[],
   fileContents: any
 ) => {
-  Object.entries(fileContents).forEach(([, data]: [string, any]) => {
+  Object.values(fileContents).forEach((data: any) => {
     for (const entry of data) {
       let songName = entry["master_metadata_track_name"];
       let artistName = entry["master_metadata_album_artist_name"];
@@ -42,7 +19,6 @@ const processData = (
         if (idName in songs) {
           songs[idName].ms_listened += entry["ms_played"];
           songs[idName].times_listened += 1;
-          songs[idName].timestamps.push(dayjs(entry["ts"]));
           if (entry["skipped"]) {
             songs[idName].times_skipped += 1;
           }
@@ -53,14 +29,12 @@ const processData = (
             times_listened: 1,
             ms_listened: entry["ms_played"],
             times_skipped: entry["skipped"] ? 1 : 0,
-            timestamps: [dayjs(entry["ts"])],
           };
         }
 
         if (artistName in artists) {
           artists[artistName].ms_listened += entry["ms_played"];
           artists[artistName].songs_played += 1;
-          artists[artistName].timestamps.push(dayjs(entry["ts"]));
           if (entry["skipped"]) {
             artists[artistName].times_skipped += 1;
           }
@@ -70,9 +44,16 @@ const processData = (
             songs_played: 1,
             ms_listened: entry["ms_played"],
             times_skipped: entry["skipped"] ? 1 : 0,
-            timestamps: [dayjs(entry["ts"])],
           };
         }
+
+        const event = {
+          song: songName,
+          artist: artistName,
+          timestamp: entry["ts"],
+        };
+
+        listeningEvents.push(event);
       }
     }
   });
@@ -87,6 +68,7 @@ export const handleFileUpload = async (
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setSongData: (data: any) => void,
   setArtistData: (data: any) => void,
+  setListeningEvents: (data: any) => void,
   router: any
 ) => {
   const file = e.target.files?.[0];
@@ -131,11 +113,13 @@ export const handleFileUpload = async (
 
     const artists = {};
     const songs = {};
+    const listeningEvents: ListeningEvent[] = [];
 
-    processData(songs, artists, fileContents);
+    processData(songs, artists, listeningEvents, fileContents);
 
     setSongData(songs);
     setArtistData(artists);
+    setListeningEvents(listeningEvents);
 
     router.push("/stats");
   } catch (err) {
