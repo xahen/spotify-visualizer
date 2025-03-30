@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
-import { NestedAggregation } from "@/lib/types";
+import { NestedAggregation, SongList, ArtistList } from "@/lib/types";
 
-export const sortSongByListens = (songs: any) => {
+export const sortSongByListens = (songs: SongList = {}) => {
   const sortedSongs = Object.values(songs).sort(
     (a, b) => b.times_listened - a.times_listened
   );
@@ -9,7 +9,7 @@ export const sortSongByListens = (songs: any) => {
   return sortedSongs;
 };
 
-export const sortArtistByListens = (artists: any) => {
+export const sortArtistByListens = (artists: ArtistList = {}) => {
   const sortedSongs = Object.values(artists).sort(
     (a, b) => b.songs_played - a.songs_played
   );
@@ -17,7 +17,7 @@ export const sortArtistByListens = (artists: any) => {
   return sortedSongs;
 };
 
-export const totalTimeListened = (songs: any) => {
+export const totalTimeListened = (songs: SongList) => {
   let timeListened = 0;
   Object.values(songs).forEach((data) => {
     timeListened += data.ms_listened;

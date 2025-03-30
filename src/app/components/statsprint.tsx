@@ -1,8 +1,9 @@
 "use client";
 
 import { useAppContext } from "@/context/AppContext";
+import { SongList, ArtistList } from "@/lib/types";
 
-const sortSongByListens = (songs: any) => {
+const sortSongByListens = (songs: SongList) => {
   const sortedSongs = Object.values(songs).sort(
     (a, b) => b.times_listened - a.times_listened
   );
@@ -10,7 +11,7 @@ const sortSongByListens = (songs: any) => {
   return sortedSongs;
 };
 
-const sortArtistByListens = (songs: any) => {
+const sortArtistByListens = (songs: ArtistList) => {
   const sortedSongs = Object.values(songs).sort(
     (a, b) => b.songs_played - a.songs_played
   );

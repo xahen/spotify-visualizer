@@ -9,7 +9,7 @@ const processData = (
   listeningEvents: ListeningEvent[],
   fileContents: any
 ) => {
-  Object.values(fileContents).forEach((data) => {
+  Object.values(fileContents).forEach((data: any) => {
     for (const entry of data) {
       let songName = entry["master_metadata_track_name"];
       let artistName = entry["master_metadata_album_artist_name"];
