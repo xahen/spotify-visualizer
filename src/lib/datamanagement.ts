@@ -2,18 +2,16 @@ import dayjs from "dayjs";
 import { NestedAggregation } from "@/lib/types";
 
 export const sortSongByListens = (songs: any) => {
-  const sortedSongs = Object.entries(songs).sort(
-    ([, a]: [string, any], [, b]: [string, any]) =>
-      b.times_listened - a.times_listened
+  const sortedSongs = Object.values(songs).sort(
+    (a, b) => b.times_listened - a.times_listened
   );
 
   return sortedSongs;
 };
 
 export const sortArtistByListens = (artists: any) => {
-  const sortedSongs = Object.entries(artists).sort(
-    ([, a]: [string, any], [, b]: [string, any]) =>
-      b.songs_played - a.songs_played
+  const sortedSongs = Object.values(artists).sort(
+    (a, b) => b.songs_played - a.songs_played
   );
 
   return sortedSongs;
@@ -21,7 +19,7 @@ export const sortArtistByListens = (artists: any) => {
 
 export const totalTimeListened = (songs: any) => {
   let timeListened = 0;
-  Object.entries(songs).forEach(([, data]: [string, any]) => {
+  Object.values(songs).forEach((data) => {
     timeListened += data.ms_listened;
   });
 

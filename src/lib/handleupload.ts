@@ -1,5 +1,4 @@
 import JSZip from "jszip";
-import dayjs from "dayjs";
 
 import { ArtistList, SongList, ListeningEvent } from "@/lib/types";
 
@@ -10,7 +9,7 @@ const processData = (
   listeningEvents: ListeningEvent[],
   fileContents: any
 ) => {
-  Object.entries(fileContents).forEach(([, data]: [string, any]) => {
+  Object.values(fileContents).forEach((data) => {
     for (const entry of data) {
       let songName = entry["master_metadata_track_name"];
       let artistName = entry["master_metadata_album_artist_name"];

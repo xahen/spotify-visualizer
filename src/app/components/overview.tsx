@@ -77,8 +77,8 @@ export const StatsOverview = () => {
 
           <ul className="mt-4 ml-4 list-decimal list-inside">
             {sortedSongs.slice(0, 10).map((song) => (
-              <li key={song[0]}>
-                {song[1].artist} - {song[1].name} ({song[1].times_listened})
+              <li key={song.name}>
+                {song.artist} - {song.name} ({song.times_listened})
               </li>
             ))}
           </ul>
@@ -90,8 +90,8 @@ export const StatsOverview = () => {
 
           <ul className="mt-4 ml-4 list-decimal list-inside">
             {sortedArtists.slice(0, 10).map((artist) => (
-              <li key={artist[0]}>
-                {artist[1].name} ({artist[1].songs_played})
+              <li key={artist.name}>
+                {artist.name} ({artist.songs_played})
               </li>
             ))}
           </ul>

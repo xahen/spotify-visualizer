@@ -3,16 +3,16 @@
 import { useAppContext } from "@/context/AppContext";
 
 const sortSongByListens = (songs: any) => {
-  const sortedSongs = Object.entries(songs).sort(
-    ([, a], [, b]) => b.times_listened - a.times_listened
+  const sortedSongs = Object.values(songs).sort(
+    (a, b) => b.times_listened - a.times_listened
   );
 
   return sortedSongs;
 };
 
 const sortArtistByListens = (songs: any) => {
-  const sortedSongs = Object.entries(songs).sort(
-    ([, a], [, b]) => b.songs_played - a.songs_played
+  const sortedSongs = Object.values(songs).sort(
+    (a, b) => b.songs_played - a.songs_played
   );
 
   return sortedSongs;
@@ -33,8 +33,8 @@ export const StatsPrint = () => {
           </div>
           <div className="mt-2">
             {sortedByListens.map((song) => (
-              <p className="ml-4 text-base" key={song[0]}>
-                {song[1].artist} - {song[1].name} ({song[1].times_listened})
+              <p className="ml-4 text-base" key={song.name}>
+                {song.artist} - {song.name} ({song.times_listened})
               </p>
             ))}
           </div>
@@ -45,8 +45,8 @@ export const StatsPrint = () => {
           </div>
           <div className="mt-2">
             {artistByListens.map((artist) => (
-              <p className="ml-4 text-base" key={artist[0]}>
-                {artist[1].name} ({artist[1].songs_played})
+              <p className="ml-4 text-base" key={artist.name}>
+                {artist.name} ({artist.songs_played})
               </p>
             ))}
           </div>
