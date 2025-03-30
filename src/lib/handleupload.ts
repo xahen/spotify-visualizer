@@ -1,10 +1,12 @@
 import JSZip from "jszip";
+import dayjs from "dayjs";
 
 type Artist = {
   name: string;
   songs_played: number;
   ms_listened: number;
   times_skipped: number;
+  timestamps: [{}];
 };
 
 type ArtistList = {
@@ -17,6 +19,7 @@ type Song = {
   times_listened: number;
   ms_listened: number;
   times_skipped: number;
+  timestamps: [{}];
 };
 
 type SongList = {
@@ -29,7 +32,7 @@ const processData = (
   artists: ArtistList,
   fileContents: any
 ) => {
-  Object.entries(fileContents).forEach(([filename, data]: [string, any]) => {
+  Object.entries(fileContents).forEach(([, data]: [string, any]) => {
     for (const entry of data) {
       let songName = entry["master_metadata_track_name"];
       let artistName = entry["master_metadata_album_artist_name"];
@@ -39,6 +42,7 @@ const processData = (
         if (idName in songs) {
           songs[idName].ms_listened += entry["ms_played"];
           songs[idName].times_listened += 1;
+          songs[idName].timestamps.push(dayjs(entry["ts"]));
           if (entry["skipped"]) {
             songs[idName].times_skipped += 1;
           }
@@ -49,12 +53,14 @@ const processData = (
             times_listened: 1,
             ms_listened: entry["ms_played"],
             times_skipped: entry["skipped"] ? 1 : 0,
+            timestamps: [dayjs(entry["ts"])],
           };
         }
 
         if (artistName in artists) {
           artists[artistName].ms_listened += entry["ms_played"];
           artists[artistName].songs_played += 1;
+          artists[artistName].timestamps.push(dayjs(entry["ts"]));
           if (entry["skipped"]) {
             artists[artistName].times_skipped += 1;
           }
@@ -64,6 +70,7 @@ const processData = (
             songs_played: 1,
             ms_listened: entry["ms_played"],
             times_skipped: entry["skipped"] ? 1 : 0,
+            timestamps: [dayjs(entry["ts"])],
           };
         }
       }

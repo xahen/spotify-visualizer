@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/jszip": "^3.4.0",
+    "dayjs": "^1.11.13",
     "jszip": "^3.10.1",
     "next": "^15.2.4",
     "react": "^19.0.0",
