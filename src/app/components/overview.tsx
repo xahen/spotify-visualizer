@@ -127,7 +127,7 @@ export const StatsOverview = () => {
       labels: chartData.labels,
       datasets: [
         {
-          label: "Plays per year",
+          label: "Plays",
           data: chartData.dataPoints,
           backgroundColor: "#1ed760",
         },
@@ -148,7 +148,7 @@ export const StatsOverview = () => {
             Your top songs
           </h1>
 
-          <ul className="mt-4 ml-4 list-decimal list-inside">
+          <ul className="mt-4 ml-4 list-decimal list-inside marker:text-spotifygreen">
             {sortedSongs.slice(0, 10).map((song) => (
               <li key={song.name}>
                 {song.artist} - {song.name} ({song.times_listened})
@@ -163,7 +163,7 @@ export const StatsOverview = () => {
             Your top artists
           </h1>
 
-          <ul className="mt-4 ml-4 list-decimal list-inside">
+          <ul className="mt-4 ml-4 list-decimal list-inside marker:text-spotifygreen">
             {sortedArtists.slice(0, 10).map((artist) => (
               <li key={artist.name}>
                 {artist.name} ({artist.songs_played})
@@ -196,7 +196,7 @@ export const StatsOverview = () => {
 
         {/* fairly convoluted implementation */}
         {/* renders total listening time with all factors accounted for */}
-        <h2 className="text-lg mt-4 text-center">
+        <h2 className="text-lg mt-4 text-center text-spotifygreen">
           {years > 0 ? (years > 1 ? years + " years" : years + " year") : null}{" "}
           {days > 0 ? (days > 1 ? days + " days" : days + " day") : null}{" "}
           {hours > 0 ? (hours > 1 ? hours + " hours" : hours + " hour") : null}{" "}
