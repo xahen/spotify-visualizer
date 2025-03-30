@@ -35,7 +35,8 @@ import { monthToNumber } from "@/lib/data";
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
 defaults.color = "#FFFFFF";
-defaults.backgroundColor = "rgba(255, 255, 255, 0.2)";
+//defaults.backgroundColor = "rgba(255, 255, 255, 0.2)";
+defaults.borderColor = "rgba(255, 255, 255, 0.2)";
 
 // i needed this to make it work - but i want to find a way around it
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
@@ -48,6 +49,11 @@ export const StatsOverview = () => {
     labels: string[];
     dataPoints: number[];
   }>({ labels: [], dataPoints: [] });
+  const [monthData, setMonthData] = useState<{
+    labels: string[];
+    dataPoints: number[];
+  }>({ labels: [], dataPoints: [] });
+
   const chartRef = useRef<any>(null);
   const [barState, setBarState] = useState<string>("year");
   const [trackYear, setTrackYear] = useState<string>("");
@@ -92,6 +98,7 @@ export const StatsOverview = () => {
         setChartData(monthlyCount);
         setBarState("month");
         setTrackYear(chartData.labels[index]);
+        setMonthData(monthlyCount);
       } else if (barState === "month") {
         const monthNumber = monthToNumber[chartData.labels[index]];
         const dailyCount = calculateDailyCount(
@@ -102,6 +109,16 @@ export const StatsOverview = () => {
         setChartData(dailyCount);
         setBarState("day");
       }
+    }
+  };
+
+  const backButton = () => {
+    if (barState === "month") {
+      setBarState("year");
+      setChartData(yearlyCount);
+    } else if (barState === "day") {
+      setBarState("month");
+      setChartData(monthData);
     }
   };
 
@@ -158,9 +175,19 @@ export const StatsOverview = () => {
 
       {/* total listening time */}
       <section className="m-auto bg-spotifyblack p-4 w-[82vw] h-[45vh] rounded-3xl">
-        <h1 className="text-2xl text-center text-spotifygreen">
-          Your total listening time
-        </h1>
+        <div className="relative w-full">
+          {(barState === "month" || barState === "day") && (
+            <button
+              className="absolute -top-1 border-2 border-spotifygreen px-2 py-0.5 text-2xl rounded-3xl hover:bg-white/30"
+              onClick={backButton}
+            >
+              Back
+            </button>
+          )}
+          <h1 className="text-2xl text-center text-spotifygreen">
+            Your total listening time
+          </h1>
+        </div>
         <div className="h-[80%] mt-2">
           {/* songs played bar chart */}
           {/* find a way to change between yearly and monthly bar charts */}
