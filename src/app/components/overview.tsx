@@ -7,8 +7,8 @@ import {
   totalTimeListened,
   aggregateData,
   calculateYearlyCount,
+  calculateMonthlyCount,
 } from "@/lib/datamanagement";
-import { NestedAggregation } from "@/lib/types";
 import {
   Chart as ChartJS,
   defaults,
@@ -25,46 +25,6 @@ defaults.responsive = true;
 defaults.color = "#FFFFFF";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
-
-const calculateMonthlyCount = (
-  aggregatedData: NestedAggregation,
-  year: string
-) => {
-  if (!aggregatedData[year]) return { labels: [], dataPoints: [] };
-
-  const monthlyCount: { [month: string]: number } = {};
-
-  Object.keys(aggregatedData[year]).forEach((month) => {
-    monthlyCount[month] = Object.values(aggregatedData[year][month]).reduce(
-      (total: number, count: number) => total + count,
-      0
-    );
-  });
-
-  const labels = Object.keys(monthlyCount).sort();
-  const dataPoints = labels.map((month) => monthlyCount[month]);
-
-  const monthName = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  for (let i = 0; i < labels.length; i++) {
-    labels[i] = monthName[parseInt(labels[i]) - 1];
-  }
-
-  return { labels, dataPoints };
-};
 
 export const StatsOverview = () => {
   const { songData, artistData, listeningEvents } = useAppContext();
