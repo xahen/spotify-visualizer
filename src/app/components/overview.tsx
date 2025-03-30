@@ -1,6 +1,8 @@
 "use client";
 
+// import the use of global states
 import { useAppContext } from "@/context/AppContext";
+// import all the needed data management functions
 import {
   sortSongByListens,
   sortArtistByListens,
@@ -9,6 +11,9 @@ import {
   calculateYearlyCount,
   calculateMonthlyCount,
 } from "@/lib/datamanagement";
+// import chartjs and other related things
+// do i need to import all of these? or can i find a way around it
+// seems kind of stupid
 import {
   Chart as ChartJS,
   defaults,
@@ -20,19 +25,32 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
+// set default chartjs options for better visuals
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
 defaults.color = "#FFFFFF";
 
+// i needed this to make it work - but i want to find a way around it
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 export const StatsOverview = () => {
+  // global states
   const { songData, artistData, listeningEvents } = useAppContext();
+
+  // organizing data from all the data management functions
   const sortedSongs = sortSongByListens(songData);
   const sortedArtists = sortArtistByListens(artistData);
   const [years, days, hours, minutes, seconds] = totalTimeListened(songData);
+
+  // maybe give this a more descriptive name?
+  // it aggregates the listeningEvents array to a collection of objects
+  // the keys are the date and the values are the count (songs played)
   const aggregatedData = aggregateData(listeningEvents);
+
+  // specify it to every year
   const yearlyCount = calculateYearlyCount(aggregatedData);
+
+  // specify it to every month in a specific year
   const monthlyCount = calculateMonthlyCount(aggregatedData, "2023");
 
   // summary cards
@@ -72,6 +90,8 @@ export const StatsOverview = () => {
       <section className="m-auto bg-gray-500 p-4 w-[82vw] h-[45vh] rounded-3xl">
         <h1 className="text-2xl text-center">Your total listening time</h1>
         <div className="h-[80%] mt-2">
+          {/* songs played bar chart */}
+          {/* find a way to change between yearly and monthly bar charts */}
           <Bar
             data={{
               labels: yearlyCount.labels,
@@ -85,6 +105,9 @@ export const StatsOverview = () => {
             }}
           />
         </div>
+
+        {/* fairly convoluted implementation */}
+        {/* renders total listening time with all factors accounted for */}
         <h2 className="text-lg mt-4 text-center">
           {years > 0 ? (years > 1 ? years + " years" : years + " year") : null}{" "}
           {days > 0 ? (days > 1 ? days + " days" : days + " day") : null}{" "}
