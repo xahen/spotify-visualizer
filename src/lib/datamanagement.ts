@@ -20,7 +20,15 @@ export const totalTimeListened = (songs: any) => {
     timeListened += data.ms_listened;
   });
 
-  let years = timeListened / 3.154e10;
+  let years = Math.floor(timeListened / 3.154e10);
+  timeListened = timeListened - 3.154e10 * years;
+  let days = Math.floor(timeListened / 8.64e7);
+  timeListened = timeListened - 8.64e7 * days;
+  let hours = Math.floor(timeListened / 3.6e6);
+  timeListened = timeListened - 3.6e6 * hours;
+  let minutes = Math.floor(timeListened / 60000);
+  timeListened = timeListened - 60000 * minutes;
+  let seconds = Math.floor(timeListened / 1000);
 
-  return years;
+  return [years, days, hours, minutes, seconds];
 };
