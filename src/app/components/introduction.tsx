@@ -52,6 +52,7 @@ export const WelcomePage = () => {
             If you want the full experience, download both your &apos;Account
             data&apos; and your &apos;Extended streaming history&apos;.
           </p>
+
           <p>It might take a few days for Spotify to prepare your data.</p>
 
           <h4 className="mt-2 text-lg font-bold text-spotifygreen">Second</h4>
@@ -69,6 +70,18 @@ export const WelcomePage = () => {
             Enjoy going through a beautiful and nostalgic trip of your listening
             habits!
           </p>
+        </div>
+      </section>
+
+      <section className="mt-8">
+        <h3 className="text-2xl font-bold text-spotifygreen">IMPORTANT:</h3>
+        <div className="ml-4 text-lg italic">
+          <p>
+            Currently, only the &apos;Extended streaming history&apos; data is
+            supported.
+          </p>
+          <p>This is a very early build, more features will be added.</p>
+          <p>Thank you for checking my app out.</p>
         </div>
       </section>
 
