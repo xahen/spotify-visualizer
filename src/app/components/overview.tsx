@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef, useMemo, useEffect } from "react";
 // import the use of global states
 import { useAppContext } from "@/context/AppContext";
 // import all the needed data management functions
@@ -25,12 +26,13 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Bar, getElementAtEvent } from "react-chartjs-2";
 
 // set default chartjs options for better visuals
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
 defaults.color = "#FFFFFF";
+defaults.backgroundColor = "rgba(255, 255, 255, 0.2)";
 
 // i needed this to make it work - but i want to find a way around it
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
@@ -38,6 +40,12 @@ ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 export const StatsOverview = () => {
   // global states
   const { songData, artistData, listeningEvents } = useAppContext();
+
+  const [chartData, setChartData] = useState<{
+    labels: string[];
+    dataPoints: number[];
+  }>({ labels: [], dataPoints: [] });
+  const chartRef = useRef<any>(null);
 
   // organizing data from all the data management functions
   const sortedSongs = sortSongByListens(songData);
@@ -52,11 +60,46 @@ export const StatsOverview = () => {
   // specify it to every year
   const yearlyCount = calculateYearlyCount(aggregatedData);
 
+  useEffect(() => {
+    setChartData(yearlyCount);
+  }, []);
+
   // specify it to every month in a specific year
-  const monthlyCount = calculateMonthlyCount(aggregatedData, "2023");
+  //const monthlyCount = calculateMonthlyCount(aggregatedData, "2023");
 
   // specify it to every day in a specific month in a specific year
-  const dailyCount = calculateDailyCount(aggregatedData, "2023", "03");
+  //const dailyCount = calculateDailyCount(aggregatedData, "2023", "03");
+
+  const handleBarClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!chartRef.current) return;
+
+    const elements = getElementAtEvent(chartRef.current, event);
+
+    if (elements.length > 0) {
+      const index = elements[0].index;
+      console.log("Clicked on:", chartData.labels[index]);
+
+      const monthlyCount = calculateMonthlyCount(
+        aggregatedData,
+        chartData.labels[index]
+      );
+      setChartData(monthlyCount);
+    }
+  };
+
+  const barData = useMemo(
+    () => ({
+      labels: chartData.labels,
+      datasets: [
+        {
+          label: "Plays per year",
+          data: chartData.dataPoints,
+          backgroundColor: "#1ed760",
+        },
+      ],
+    }),
+    [chartData]
+  );
 
   // summary cards
   // 2 at the top? - top songs and top artists
@@ -65,8 +108,10 @@ export const StatsOverview = () => {
     <>
       <section className="flex flex-row m-auto">
         {/* top songs */}
-        <div className="bg-gray-500 m-4 p-4 w-[40vw] h-[35vh] rounded-3xl overflow-hidden">
-          <h1 className="text-2xl text-center">Your top songs</h1>
+        <div className="bg-spotifyblack m-4 p-4 w-[40vw] h-[35vh] rounded-3xl overflow-hidden">
+          <h1 className="text-2xl text-center text-spotifygreen">
+            Your top songs
+          </h1>
 
           <ul className="mt-4 ml-4 list-decimal list-inside">
             {sortedSongs.slice(0, 10).map((song) => (
@@ -78,8 +123,10 @@ export const StatsOverview = () => {
         </div>
 
         {/* top artists */}
-        <div className="bg-gray-500 m-4 p-4 w-[40vw] h-[35vh] rounded-3xl overflow-hidden">
-          <h1 className="text-2xl text-center">Your top artists</h1>
+        <div className="bg-spotifyblack m-4 p-4 w-[40vw] h-[35vh] rounded-3xl overflow-hidden">
+          <h1 className="text-2xl text-center text-spotifygreen">
+            Your top artists
+          </h1>
 
           <ul className="mt-4 ml-4 list-decimal list-inside">
             {sortedArtists.slice(0, 10).map((artist) => (
@@ -92,23 +139,14 @@ export const StatsOverview = () => {
       </section>
 
       {/* total listening time */}
-      <section className="m-auto bg-gray-500 p-4 w-[82vw] h-[45vh] rounded-3xl">
-        <h1 className="text-2xl text-center">Your total listening time</h1>
+      <section className="m-auto bg-spotifyblack p-4 w-[82vw] h-[45vh] rounded-3xl">
+        <h1 className="text-2xl text-center text-spotifygreen">
+          Your total listening time
+        </h1>
         <div className="h-[80%] mt-2">
           {/* songs played bar chart */}
           {/* find a way to change between yearly and monthly bar charts */}
-          <Bar
-            data={{
-              labels: dailyCount.labels,
-              datasets: [
-                {
-                  label: "Plays per year",
-                  data: dailyCount.dataPoints,
-                  backgroundColor: "#1ed760",
-                },
-              ],
-            }}
-          />
+          <Bar ref={chartRef} data={barData} onClick={handleBarClick} />
         </div>
 
         {/* fairly convoluted implementation */}
