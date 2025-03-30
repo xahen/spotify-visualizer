@@ -47,30 +47,6 @@ export const StatsOverview = () => {
   // global states
   const { songData, artistData, listeningEvents } = useAppContext();
 
-  if (
-    Object.entries(songData).length < 1 ||
-    Object.entries(artistData).length < 1 ||
-    listeningEvents.length < 1
-  ) {
-    return (
-      <section className="flex h-screen w-screen">
-        <div className="m-auto flex flex-col justify-center">
-          <h1 className="text-3xl text-spotifygreen">
-            No data has been uploaded...
-          </h1>
-          <div className="w-full flex mt-2">
-            <button
-              className="m-auto border-2 border-spotifygreen px-2 py-1 rounded-3xl text-xl hover:bg-white/30"
-              onClick={() => router.push("/")}
-            >
-              Go back
-            </button>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   const [chartData, setChartData] = useState<{
     labels: string[];
     dataPoints: number[];
@@ -161,6 +137,30 @@ export const StatsOverview = () => {
     }),
     [chartData]
   );
+
+  if (
+    Object.entries(songData).length < 1 ||
+    Object.entries(artistData).length < 1 ||
+    listeningEvents.length < 1
+  ) {
+    return (
+      <section className="flex h-screen w-screen">
+        <div className="m-auto flex flex-col justify-center">
+          <h1 className="text-3xl text-spotifygreen">
+            No data has been uploaded...
+          </h1>
+          <div className="w-full flex mt-2">
+            <button
+              className="m-auto border-2 border-spotifygreen px-2 py-1 rounded-3xl text-xl hover:bg-white/30"
+              onClick={() => router.push("/")}
+            >
+              Go back
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   // summary cards
   // 2 at the top? - top songs and top artists
