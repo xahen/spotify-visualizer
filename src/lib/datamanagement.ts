@@ -1,6 +1,7 @@
 export const sortSongByListens = (songs: any) => {
   const sortedSongs = Object.entries(songs).sort(
-    ([, a], [, b]) => b.times_listened - a.times_listened
+    ([, a]: [string, any], [, b]: [string, any]) =>
+      b.times_listened - a.times_listened
   );
 
   return sortedSongs;
@@ -8,7 +9,8 @@ export const sortSongByListens = (songs: any) => {
 
 export const sortArtistByListens = (artists: any) => {
   const sortedSongs = Object.entries(artists).sort(
-    ([, a], [, b]) => b.songs_played - a.songs_played
+    ([, a]: [string, any], [, b]: [string, any]) =>
+      b.songs_played - a.songs_played
   );
 
   return sortedSongs;
