@@ -1,4 +1,4 @@
-export const numberToMonth: any = {
+export const numberToMonth: Record<string, string> = {
   "01": "January",
   "02": "February",
   "03": "March",
@@ -13,7 +13,7 @@ export const numberToMonth: any = {
   "12": "December",
 };
 
-export const monthToNumber: any = {
+export const monthToNumber: Record<string, string> = {
   January: "01",
   February: "02",
   March: "03",

@@ -1,5 +1,10 @@
 import dayjs from "dayjs";
-import { NestedAggregation, SongList, ArtistList } from "@/lib/types";
+import {
+  NestedAggregation,
+  SongList,
+  ArtistList,
+  ListeningEvent,
+} from "@/lib/types";
 import { numberToMonth } from "@/lib/data";
 
 export const sortSongByListens = (songs: SongList = {}) => {
@@ -24,20 +29,22 @@ export const totalTimeListened = (songs: SongList) => {
     timeListened += data.ms_listened;
   });
 
-  let years = Math.floor(timeListened / 3.154e10);
+  const years = Math.floor(timeListened / 3.154e10);
   timeListened = timeListened - 3.154e10 * years;
-  let days = Math.floor(timeListened / 8.64e7);
+  const days = Math.floor(timeListened / 8.64e7);
   timeListened = timeListened - 8.64e7 * days;
-  let hours = Math.floor(timeListened / 3.6e6);
+  const hours = Math.floor(timeListened / 3.6e6);
   timeListened = timeListened - 3.6e6 * hours;
-  let minutes = Math.floor(timeListened / 60000);
+  const minutes = Math.floor(timeListened / 60000);
   timeListened = timeListened - 60000 * minutes;
-  let seconds = Math.floor(timeListened / 1000);
+  const seconds = Math.floor(timeListened / 1000);
 
   return [years, days, hours, minutes, seconds];
 };
 
-export const aggregateData = (listeningEvents: any[]): NestedAggregation => {
+export const aggregateData = (
+  listeningEvents: ListeningEvent[]
+): NestedAggregation => {
   const aggregatedList: NestedAggregation = {};
 
   listeningEvents.forEach((event) => {

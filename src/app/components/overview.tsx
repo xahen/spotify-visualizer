@@ -1,7 +1,5 @@
 "use client";
 
-import dayjs from "dayjs";
-
 import { useState, useRef, useMemo, useEffect } from "react";
 // import the use of global states
 import { useAppContext } from "@/context/AppContext";
@@ -15,7 +13,6 @@ import {
   calculateMonthlyCount,
   calculateDailyCount,
 } from "@/lib/datamanagement";
-import { NestedAggregation } from "@/lib/types";
 // import chartjs and other related things
 // do i need to import all of these? or can i find a way around it
 // seems kind of stupid
@@ -30,6 +27,8 @@ import {
 } from "chart.js";
 import { Bar, getElementAtEvent } from "react-chartjs-2";
 import { monthToNumber } from "@/lib/data";
+
+/* eslint react-hooks/exhaustive-deps: "off" */
 
 // set default chartjs options for better visuals
 defaults.maintainAspectRatio = false;
@@ -54,7 +53,7 @@ export const StatsOverview = () => {
     dataPoints: number[];
   }>({ labels: [], dataPoints: [] });
 
-  const chartRef = useRef<any>(null);
+  const chartRef = useRef<ChartJS<"bar"> | null | undefined>(null);
   const [barState, setBarState] = useState<string>("year");
   const [trackYear, setTrackYear] = useState<string>("");
 

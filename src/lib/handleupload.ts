@@ -1,19 +1,25 @@
 import JSZip from "jszip";
 
-import { ArtistList, SongList, ListeningEvent } from "@/lib/types";
+import {
+  ArtistList,
+  SongList,
+  ListeningEvent,
+  FileContents,
+} from "@/lib/types";
 
 // iterates through the entries of the fileContents object, organizes relevant data into the songs and artists arrays
 const processData = (
   songs: SongList,
   artists: ArtistList,
   listeningEvents: ListeningEvent[],
-  fileContents: any
+  fileContents: Record<string, FileContents[]>
 ) => {
-  Object.values(fileContents).forEach((data: any) => {
+  Object.values(fileContents).forEach((data) => {
     for (const entry of data) {
-      let songName = entry["master_metadata_track_name"];
-      let artistName = entry["master_metadata_album_artist_name"];
-      let idName = artistName + " - " + songName;
+      const songName: string | null = entry["master_metadata_track_name"];
+      const artistName: string | null =
+        entry["master_metadata_album_artist_name"];
+      const idName: string = artistName + " - " + songName;
 
       if (songName !== null && artistName !== null) {
         if (idName in songs) {
@@ -66,10 +72,10 @@ const processData = (
 export const handleFileUpload = async (
   e: React.ChangeEvent<HTMLInputElement>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  setSongData: (data: any) => void,
-  setArtistData: (data: any) => void,
-  setListeningEvents: (data: any) => void,
-  router: any
+  setSongData: (data: SongList) => void,
+  setArtistData: (data: ArtistList) => void,
+  setListeningEvents: (data: ListeningEvent[]) => void,
+  router: { push: (path: string) => void }
 ) => {
   const file = e.target.files?.[0];
 
@@ -87,7 +93,7 @@ export const handleFileUpload = async (
   try {
     const zip = new JSZip();
     const contents = await zip.loadAsync(file);
-    const fileContents: { [key: string]: any } = {};
+    const fileContents: Record<string, FileContents[]> = {};
 
     const loadFiles = Object.entries(contents.files)
       .filter(

@@ -1,4 +1,4 @@
-import { StatsPrint } from "@/app/components/statsprint";
+//import { StatsPrint } from "@/app/components/statsprint";
 import { StatsOverview } from "../components/overview";
 
 export default function Stats() {

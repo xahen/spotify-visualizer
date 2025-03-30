@@ -39,3 +39,11 @@ export type ListeningEvent = {
   artist: string;
   timestamp: string;
 };
+
+export type FileContents = {
+  master_metadata_track_name: string | null;
+  master_metadata_album_artist_name: string | null;
+  ms_played: number;
+  skipped?: boolean;
+  ts: string;
+};
