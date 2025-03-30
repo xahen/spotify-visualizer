@@ -26,10 +26,17 @@ type SongList = {
   [key: string]: Song;
 };
 
+type ListeningEvent = {
+  song: string;
+  artist: string;
+  timestamp: string;
+};
+
 // iterates through the entries of the fileContents object, organizes relevant data into the songs and artists arrays
 const processData = (
   songs: SongList,
   artists: ArtistList,
+  listeningEvents: ListeningEvent[],
   fileContents: any
 ) => {
   Object.entries(fileContents).forEach(([, data]: [string, any]) => {
@@ -73,6 +80,14 @@ const processData = (
             timestamps: [dayjs(entry["ts"])],
           };
         }
+
+        const event = {
+          song: songName,
+          artist: artistName,
+          timestamp: entry["ts"],
+        };
+
+        listeningEvents.push(event);
       }
     }
   });
@@ -87,6 +102,7 @@ export const handleFileUpload = async (
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setSongData: (data: any) => void,
   setArtistData: (data: any) => void,
+  setListeningEvents: (data: any) => void,
   router: any
 ) => {
   const file = e.target.files?.[0];
@@ -131,11 +147,15 @@ export const handleFileUpload = async (
 
     const artists = {};
     const songs = {};
+    const listeningEvents: ListeningEvent[] = [];
 
-    processData(songs, artists, fileContents);
+    processData(songs, artists, listeningEvents, fileContents);
 
     setSongData(songs);
     setArtistData(artists);
+    setListeningEvents(listeningEvents);
+
+    console.log(listeningEvents);
 
     router.push("/stats");
   } catch (err) {

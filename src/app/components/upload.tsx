@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 export const ZipUpload = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const { setSongData, setArtistData } = useAppContext();
+  const { setSongData, setArtistData, setListeningEvents } = useAppContext();
   const router = useRouter();
 
   if (loading) {
@@ -44,6 +44,7 @@ export const ZipUpload = () => {
                 setLoading,
                 setSongData,
                 setArtistData,
+                setListeningEvents,
                 router
               )
             }
