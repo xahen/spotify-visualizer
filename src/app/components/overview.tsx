@@ -1,5 +1,7 @@
 "use client";
 
+import dayjs from "dayjs";
+
 import { useState, useRef, useMemo, useEffect } from "react";
 // import the use of global states
 import { useAppContext } from "@/context/AppContext";
@@ -46,6 +48,8 @@ export const StatsOverview = () => {
     dataPoints: number[];
   }>({ labels: [], dataPoints: [] });
   const chartRef = useRef<any>(null);
+  const [barState, setBarState] = useState<string>("year");
+  const [trackYear, setTrackYear] = useState<string>("");
 
   // organizing data from all the data management functions
   const sortedSongs = sortSongByListens(songData);
@@ -79,11 +83,38 @@ export const StatsOverview = () => {
       const index = elements[0].index;
       console.log("Clicked on:", chartData.labels[index]);
 
-      const monthlyCount = calculateMonthlyCount(
-        aggregatedData,
-        chartData.labels[index]
-      );
-      setChartData(monthlyCount);
+      if (barState === "year") {
+        const monthlyCount = calculateMonthlyCount(
+          aggregatedData,
+          chartData.labels[index]
+        );
+        setChartData(monthlyCount);
+        setBarState("month");
+        setTrackYear(chartData.labels[index]);
+      } else if (barState === "month") {
+        const monthToNumber: any = {
+          January: "01",
+          February: "02",
+          March: "03",
+          April: "04",
+          May: "05",
+          June: "06",
+          July: "07",
+          August: "08",
+          September: "09",
+          October: "10",
+          November: "11",
+          December: "12",
+        };
+        const monthNumber = monthToNumber[chartData.labels[index]];
+        const dailyCount = calculateDailyCount(
+          aggregatedData,
+          trackYear,
+          monthNumber
+        );
+        setChartData(dailyCount);
+        setBarState("day");
+      }
     }
   };
 
