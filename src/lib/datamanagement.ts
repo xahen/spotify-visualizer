@@ -117,3 +117,22 @@ export const calculateMonthlyCount = (
 
   return { labels, dataPoints };
 };
+
+export const calculateDailyCount = (
+  aggregatedData: NestedAggregation,
+  year: string,
+  month: string
+) => {
+  if (!aggregatedData[year][month]) return { labels: [], dataPoints: [] };
+
+  const dailyCount: { [day: string]: number } = {};
+
+  Object.keys(aggregatedData[year][month]).forEach((day) => {
+    dailyCount[day] = aggregatedData[year][month][day];
+  });
+
+  const labels = Object.keys(dailyCount).sort();
+  const dataPoints = labels.map((day) => dailyCount[day]);
+
+  return { labels, dataPoints };
+};

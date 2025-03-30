@@ -10,7 +10,9 @@ import {
   aggregateData,
   calculateYearlyCount,
   calculateMonthlyCount,
+  calculateDailyCount,
 } from "@/lib/datamanagement";
+import { NestedAggregation } from "@/lib/types";
 // import chartjs and other related things
 // do i need to import all of these? or can i find a way around it
 // seems kind of stupid
@@ -53,6 +55,9 @@ export const StatsOverview = () => {
   // specify it to every month in a specific year
   const monthlyCount = calculateMonthlyCount(aggregatedData, "2023");
 
+  // specify it to every day in a specific month in a specific year
+  const dailyCount = calculateDailyCount(aggregatedData, "2023", "03");
+
   // summary cards
   // 2 at the top? - top songs and top artists
   return (
@@ -94,11 +99,11 @@ export const StatsOverview = () => {
           {/* find a way to change between yearly and monthly bar charts */}
           <Bar
             data={{
-              labels: yearlyCount.labels,
+              labels: dailyCount.labels,
               datasets: [
                 {
                   label: "Plays per year",
-                  data: yearlyCount.dataPoints,
+                  data: dailyCount.dataPoints,
                   backgroundColor: "#1ed760",
                 },
               ],
