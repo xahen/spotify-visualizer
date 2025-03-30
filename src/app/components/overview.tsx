@@ -32,6 +32,8 @@ export const StatsOverview = () => {
   const [years, days, hours, minutes, seconds] = totalTimeListened(songData);
   const aggregatedData = aggregateData(listeningEvents);
 
+  console.log(aggregatedData);
+
   // summary cards
   // 2 at the top? - top songs and top artists
   return (

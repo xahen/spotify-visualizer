@@ -149,8 +149,6 @@ export const handleFileUpload = async (
     setArtistData(artists);
     setListeningEvents(listeningEvents);
 
-    console.log(listeningEvents);
-
     router.push("/stats");
   } catch (err) {
     console.error(err);
