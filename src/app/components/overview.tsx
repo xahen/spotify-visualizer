@@ -19,11 +19,41 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
+type NestedAggregation = {
+  [year: string]: {
+    [month: string]: {
+      [day: string]: number;
+    };
+  };
+};
+
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
 defaults.color = "#FFFFFF";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+
+const calculateYearlyCount = (aggregatedData: NestedAggregation) => {
+  const yearlyCount: { [year: string]: number } = {};
+
+  Object.keys(aggregatedData).forEach((year) => {
+    let totalCount = 0;
+
+    Object.values(aggregatedData[year]).forEach((month) => {
+      totalCount += Object.values(month).reduce(
+        (a: number, b: number) => a + b,
+        0
+      );
+    });
+
+    yearlyCount[year] = totalCount;
+  });
+
+  const labels = Object.keys(yearlyCount).sort();
+  const dataPoints = labels.map((year) => yearlyCount[year]);
+
+  return { labels, dataPoints };
+};
 
 export const StatsOverview = () => {
   const { songData, artistData, listeningEvents } = useAppContext();
@@ -31,6 +61,7 @@ export const StatsOverview = () => {
   const sortedArtists = sortArtistByListens(artistData);
   const [years, days, hours, minutes, seconds] = totalTimeListened(songData);
   const aggregatedData = aggregateData(listeningEvents);
+  const yearlyCount = calculateYearlyCount(aggregatedData);
 
   console.log(aggregatedData);
 
@@ -68,21 +99,23 @@ export const StatsOverview = () => {
       </section>
 
       {/* total listening time */}
-      <section className="m-auto bg-gray-500 p-4 w-[82vw] h-[40vh] rounded-3xl">
+      <section className="m-auto bg-gray-500 p-4 w-[82vw] h-[45vh] rounded-3xl">
         <h1 className="text-2xl text-center">Your total listening time</h1>
-        <Bar
-          data={{
-            labels: aggregatedData.labels,
-            datasets: [
-              {
-                label: "Plays per day",
-                data: aggregatedData.dataPoints,
-                backgroundColor: "#1ed760",
-              },
-            ],
-          }}
-        />
-        <h2 className="text-lg">
+        <div className="h-[80%] mt-2">
+          <Bar
+            data={{
+              labels: yearlyCount.labels,
+              datasets: [
+                {
+                  label: "Plays per year",
+                  data: yearlyCount.dataPoints,
+                  backgroundColor: "#1ed760",
+                },
+              ],
+            }}
+          />
+        </div>
+        <h2 className="text-lg mt-2">
           {years > 0 ? (years > 1 ? years + " years" : years + " year") : null}{" "}
           {days > 0 ? (days > 1 ? days + " days" : days + " day") : null}{" "}
           {hours > 0 ? (hours > 1 ? hours + " hours" : hours + " hour") : null}{" "}
