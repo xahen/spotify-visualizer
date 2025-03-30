@@ -8,6 +8,7 @@ import {
   aggregateData,
   calculateYearlyCount,
 } from "@/lib/datamanagement";
+import { NestedAggregation } from "@/lib/types";
 import {
   Chart as ChartJS,
   defaults,
@@ -25,15 +26,54 @@ defaults.color = "#FFFFFF";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
+const calculateMonthlyCount = (
+  aggregatedData: NestedAggregation,
+  year: string
+) => {
+  if (!aggregatedData[year]) return { labels: [], dataPoints: [] };
+
+  const monthlyCount: { [month: string]: number } = {};
+
+  Object.keys(aggregatedData[year]).forEach((month) => {
+    monthlyCount[month] = Object.values(aggregatedData[year][month]).reduce(
+      (total: number, count: number) => total + count,
+      0
+    );
+  });
+
+  const labels = Object.keys(monthlyCount).sort();
+  const dataPoints = labels.map((month) => monthlyCount[month]);
+
+  const monthName = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  for (let i = 0; i < labels.length; i++) {
+    labels[i] = monthName[parseInt(labels[i]) - 1];
+  }
+
+  return { labels, dataPoints };
+};
+
 export const StatsOverview = () => {
   const { songData, artistData, listeningEvents } = useAppContext();
   const sortedSongs = sortSongByListens(songData);
   const sortedArtists = sortArtistByListens(artistData);
   const [years, days, hours, minutes, seconds] = totalTimeListened(songData);
   const aggregatedData = aggregateData(listeningEvents);
-  const yearlyCount = calculateYearlyCount(aggregatedData);
-
-  console.log(aggregatedData);
+  // const yearlyCount = calculateYearlyCount(aggregatedData);
+  const monthlyCount = calculateMonthlyCount(aggregatedData, "2023");
 
   // summary cards
   // 2 at the top? - top songs and top artists
@@ -74,18 +114,18 @@ export const StatsOverview = () => {
         <div className="h-[80%] mt-2">
           <Bar
             data={{
-              labels: yearlyCount.labels,
+              labels: monthlyCount.labels,
               datasets: [
                 {
                   label: "Plays per year",
-                  data: yearlyCount.dataPoints,
+                  data: monthlyCount.dataPoints,
                   backgroundColor: "#1ed760",
                 },
               ],
             }}
           />
         </div>
-        <h2 className="text-lg mt-2">
+        <h2 className="text-lg mt-4 text-center">
           {years > 0 ? (years > 1 ? years + " years" : years + " year") : null}{" "}
           {days > 0 ? (days > 1 ? days + " days" : days + " day") : null}{" "}
           {hours > 0 ? (hours > 1 ? hours + " hours" : hours + " hour") : null}{" "}
