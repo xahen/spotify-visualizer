@@ -5,16 +5,32 @@ import {
   sortSongByListens,
   sortArtistByListens,
   totalTimeListened,
+  aggregateData,
 } from "@/lib/datamanagement";
 
-import { Chart as ChartJS } from "chart.js/auto";
+import {
+  Chart as ChartJS,
+  defaults,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { Bar } from "react-chartjs-2";
 
+defaults.maintainAspectRatio = false;
+defaults.responsive = true;
+defaults.color = "#FFFFFF";
+
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+
 export const StatsOverview = () => {
-  const { songData, artistData } = useAppContext();
+  const { songData, artistData, listeningEvents } = useAppContext();
   const sortedSongs = sortSongByListens(songData);
   const sortedArtists = sortArtistByListens(artistData);
   const [years, days, hours, minutes, seconds] = totalTimeListened(songData);
+  const aggregatedData = aggregateData(listeningEvents);
 
   // summary cards
   // 2 at the top? - top songs and top artists
@@ -52,6 +68,18 @@ export const StatsOverview = () => {
       {/* total listening time */}
       <section className="m-auto bg-gray-500 p-4 w-[82vw] h-[40vh] rounded-3xl">
         <h1 className="text-2xl text-center">Your total listening time</h1>
+        <Bar
+          data={{
+            labels: aggregatedData.labels,
+            datasets: [
+              {
+                label: "Plays per day",
+                data: aggregatedData.dataPoints,
+                backgroundColor: "#1ed760",
+              },
+            ],
+          }}
+        />
         <h2 className="text-lg">
           {years > 0 ? (years > 1 ? years + " years" : years + " year") : null}{" "}
           {days > 0 ? (days > 1 ? days + " days" : days + " day") : null}{" "}

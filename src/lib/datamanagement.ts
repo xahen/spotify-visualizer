@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const sortSongByListens = (songs: any) => {
   const sortedSongs = Object.entries(songs).sort(
     ([, a]: [string, any], [, b]: [string, any]) =>
@@ -33,4 +35,21 @@ export const totalTimeListened = (songs: any) => {
   let seconds = Math.floor(timeListened / 1000);
 
   return [years, days, hours, minutes, seconds];
+};
+
+export const aggregateData = (listeningEvents: any) => {
+  const counts: { [date: string]: number } = {};
+
+  listeningEvents.forEach((event) => {
+    const date = dayjs(event.timestamp).format("DD/MM/YYYY");
+    counts[date] = (counts[date] || 0) + 1;
+  });
+
+  const labels = Object.keys(counts).sort((a, b) => {
+    return dayjs(a).diff(dayjs(b, "day"));
+  });
+  const dataPoints = labels.map((label) => counts[label]);
+  console.log(dataPoints);
+
+  return { labels, dataPoints };
 };

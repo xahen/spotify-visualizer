@@ -21,7 +21,7 @@ type AppContextType = {
   setSongData: React.Dispatch<React.SetStateAction<DataState>>;
   artistData: DataState;
   setArtistData: React.Dispatch<React.SetStateAction<DataState>>;
-  events: ListeningEvent[];
+  listeningEvents: ListeningEvent[];
   setListeningEvents: React.Dispatch<React.SetStateAction<ListeningEvent[]>>;
 };
 
@@ -34,7 +34,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [artistData, setArtistData] = useState<DataState>({
     data: {},
   });
-  const [events, setListeningEvents] = useState<ListeningEvent[]>([]);
+  const [listeningEvents, setListeningEvents] = useState<ListeningEvent[]>([]);
 
   return (
     <AppContext.Provider
@@ -43,7 +43,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setSongData,
         artistData,
         setArtistData,
-        events,
+        listeningEvents,
         setListeningEvents,
       }}
     >
