@@ -49,7 +49,6 @@ export const aggregateData = (listeningEvents: any) => {
     return dayjs(a).diff(dayjs(b, "day"));
   });
   const dataPoints = labels.map((label) => counts[label]);
-  console.log(dataPoints);
 
   return { labels, dataPoints };
 };
