@@ -7,6 +7,9 @@ import {
   totalTimeListened,
 } from "@/lib/datamanagement";
 
+import { Chart as ChartJS } from "chart.js/auto";
+import { Bar } from "react-chartjs-2";
+
 export const StatsOverview = () => {
   const { songData, artistData } = useAppContext();
   const sortedSongs = sortSongByListens(songData);
