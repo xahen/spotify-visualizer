@@ -1,4 +1,4 @@
-import { Sidebar } from "@/app/components/sidebar";
+// import { Sidebar } from "@/app/components/sidebar";
 
 export default function StatsLayout({
   children,
@@ -7,7 +7,7 @@ export default function StatsLayout({
 }>) {
   return (
     <>
-      <Sidebar />
+      {/* <Sidebar /> */}
       {children}
     </>
   );
