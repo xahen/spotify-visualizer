@@ -1,34 +1,7 @@
 import JSZip from "jszip";
 import dayjs from "dayjs";
 
-type Artist = {
-  name: string;
-  songs_played: number;
-  ms_listened: number;
-  times_skipped: number;
-};
-
-type ArtistList = {
-  [key: string]: Artist;
-};
-
-type Song = {
-  name: string;
-  artist: string;
-  times_listened: number;
-  ms_listened: number;
-  times_skipped: number;
-};
-
-type SongList = {
-  [key: string]: Song;
-};
-
-type ListeningEvent = {
-  song: string;
-  artist: string;
-  timestamp: string;
-};
+import { ArtistList, SongList, ListeningEvent } from "@/lib/types";
 
 // iterates through the entries of the fileContents object, organizes relevant data into the songs and artists arrays
 const processData = (

@@ -1,12 +1,5 @@
 import dayjs from "dayjs";
-
-type NestedAggregation = {
-  [year: string]: {
-    [month: string]: {
-      [day: string]: number;
-    };
-  };
-};
+import { NestedAggregation } from "@/lib/types";
 
 export const sortSongByListens = (songs: any) => {
   const sortedSongs = Object.entries(songs).sort(
@@ -61,10 +54,6 @@ export const aggregateData = (listeningEvents: any[]): NestedAggregation => {
     aggregatedList[year][month][day] =
       (aggregatedList[year][month][day] || 0) + 1;
   });
-
-  /* const labels = Object.keys(counts).sort((a, b) => {
-    return dayjs(a).diff(dayjs(b, "day"));
-  }); */
 
   return aggregatedList;
 };

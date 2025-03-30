@@ -2,18 +2,6 @@
 
 import { useAppContext } from "@/context/AppContext";
 
-type Song = {
-  name: string;
-  artist: string;
-  times_listened: number;
-  ms_listened: number;
-  times_skipped: number;
-};
-
-type SongList = {
-  [key: string]: Song;
-};
-
 const sortSongByListens = (songs: any) => {
   const sortedSongs = Object.entries(songs).sort(
     ([, a], [, b]) => b.times_listened - a.times_listened

@@ -1,29 +1,7 @@
 "use client";
 
 import { createContext, ReactNode, useContext, useState } from "react";
-
-type Data = {
-  [key: string]: any;
-};
-
-type DataState = {
-  data: Record<string, Data>;
-};
-
-type ListeningEvent = {
-  song: string;
-  artist: string;
-  timestamp: string;
-};
-
-type AppContextType = {
-  songData: DataState;
-  setSongData: React.Dispatch<React.SetStateAction<DataState>>;
-  artistData: DataState;
-  setArtistData: React.Dispatch<React.SetStateAction<DataState>>;
-  listeningEvents: ListeningEvent[];
-  setListeningEvents: React.Dispatch<React.SetStateAction<ListeningEvent[]>>;
-};
+import { DataState, ListeningEvent, AppContextType } from "@/lib/types";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
