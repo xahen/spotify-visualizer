@@ -6,8 +6,8 @@ import {
   sortArtistByListens,
   totalTimeListened,
   aggregateData,
+  calculateYearlyCount,
 } from "@/lib/datamanagement";
-
 import {
   Chart as ChartJS,
   defaults,
@@ -19,41 +19,11 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
-type NestedAggregation = {
-  [year: string]: {
-    [month: string]: {
-      [day: string]: number;
-    };
-  };
-};
-
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
 defaults.color = "#FFFFFF";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
-
-const calculateYearlyCount = (aggregatedData: NestedAggregation) => {
-  const yearlyCount: { [year: string]: number } = {};
-
-  Object.keys(aggregatedData).forEach((year) => {
-    let totalCount = 0;
-
-    Object.values(aggregatedData[year]).forEach((month) => {
-      totalCount += Object.values(month).reduce(
-        (a: number, b: number) => a + b,
-        0
-      );
-    });
-
-    yearlyCount[year] = totalCount;
-  });
-
-  const labels = Object.keys(yearlyCount).sort();
-  const dataPoints = labels.map((year) => yearlyCount[year]);
-
-  return { labels, dataPoints };
-};
 
 export const StatsOverview = () => {
   const { songData, artistData, listeningEvents } = useAppContext();

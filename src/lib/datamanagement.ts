@@ -55,3 +55,25 @@ export const aggregateData = (listeningEvents: any[]): NestedAggregation => {
 
   return aggregatedList;
 };
+
+export const calculateYearlyCount = (aggregatedData: NestedAggregation) => {
+  const yearlyCount: { [year: string]: number } = {};
+
+  Object.keys(aggregatedData).forEach((year) => {
+    let totalCount = 0;
+
+    Object.values(aggregatedData[year]).forEach((month) => {
+      totalCount += Object.values(month).reduce(
+        (a: number, b: number) => a + b,
+        0
+      );
+    });
+
+    yearlyCount[year] = totalCount;
+  });
+
+  const labels = Object.keys(yearlyCount).sort();
+  const dataPoints = labels.map((year) => yearlyCount[year]);
+
+  return { labels, dataPoints };
+};
