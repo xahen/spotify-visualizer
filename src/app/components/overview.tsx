@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
 // import the use of global states
 import { useAppContext } from "@/context/AppContext";
 // import all the needed data management functions
@@ -41,8 +42,34 @@ defaults.borderColor = "rgba(255, 255, 255, 0.2)";
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 export const StatsOverview = () => {
+  const router = useRouter();
+
   // global states
   const { songData, artistData, listeningEvents } = useAppContext();
+
+  if (
+    Object.entries(songData).length < 1 ||
+    Object.entries(artistData).length < 1 ||
+    listeningEvents.length < 1
+  ) {
+    return (
+      <section className="flex h-screen w-screen">
+        <div className="m-auto flex flex-col justify-center">
+          <h1 className="text-3xl text-spotifygreen">
+            No data has been uploaded...
+          </h1>
+          <div className="w-full flex mt-2">
+            <button
+              className="m-auto border-2 border-spotifygreen px-2 py-1 rounded-3xl text-xl hover:bg-white/30"
+              onClick={() => router.push("/")}
+            >
+              Go back
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const [chartData, setChartData] = useState<{
     labels: string[];

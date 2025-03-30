@@ -16,7 +16,7 @@ export const ZipUpload = () => {
     return (
       <div className="mt-4 ml-4">
         <div className="flex">
-          <FaSpinner size={25} className="animate-spin mt-1" />
+          <FaSpinner color="#1ed760" size={25} className="animate-spin mt-1" />
           <p className="text-2xl ml-4">Loading...</p>
         </div>
       </div>
