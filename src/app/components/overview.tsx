@@ -29,6 +29,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar, getElementAtEvent } from "react-chartjs-2";
+import { monthToNumber } from "@/lib/data";
 
 // set default chartjs options for better visuals
 defaults.maintainAspectRatio = false;
@@ -92,20 +93,6 @@ export const StatsOverview = () => {
         setBarState("month");
         setTrackYear(chartData.labels[index]);
       } else if (barState === "month") {
-        const monthToNumber: any = {
-          January: "01",
-          February: "02",
-          March: "03",
-          April: "04",
-          May: "05",
-          June: "06",
-          July: "07",
-          August: "08",
-          September: "09",
-          October: "10",
-          November: "11",
-          December: "12",
-        };
         const monthNumber = monthToNumber[chartData.labels[index]];
         const dailyCount = calculateDailyCount(
           aggregatedData,

@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { NestedAggregation, SongList, ArtistList } from "@/lib/types";
+import { numberToMonth } from "@/lib/data";
 
 export const sortSongByListens = (songs: SongList = {}) => {
   const sortedSongs = Object.values(songs).sort(
@@ -96,23 +97,8 @@ export const calculateMonthlyCount = (
   const labels = Object.keys(monthlyCount).sort();
   const dataPoints = labels.map((month) => monthlyCount[month]);
 
-  const monthName = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
   for (let i = 0; i < labels.length; i++) {
-    labels[i] = monthName[parseInt(labels[i]) - 1];
+    labels[i] = numberToMonth[labels[i]];
   }
 
   return { labels, dataPoints };
