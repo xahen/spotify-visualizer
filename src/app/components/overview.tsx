@@ -32,7 +32,7 @@ export const StatsOverview = () => {
   const sortedArtists = sortArtistByListens(artistData);
   const [years, days, hours, minutes, seconds] = totalTimeListened(songData);
   const aggregatedData = aggregateData(listeningEvents);
-  // const yearlyCount = calculateYearlyCount(aggregatedData);
+  const yearlyCount = calculateYearlyCount(aggregatedData);
   const monthlyCount = calculateMonthlyCount(aggregatedData, "2023");
 
   // summary cards
@@ -74,11 +74,11 @@ export const StatsOverview = () => {
         <div className="h-[80%] mt-2">
           <Bar
             data={{
-              labels: monthlyCount.labels,
+              labels: yearlyCount.labels,
               datasets: [
                 {
                   label: "Plays per year",
-                  data: monthlyCount.dataPoints,
+                  data: yearlyCount.dataPoints,
                   backgroundColor: "#1ed760",
                 },
               ],
