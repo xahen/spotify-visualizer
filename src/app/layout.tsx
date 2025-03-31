@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 import { AppProvider } from "@/context/AppContext";
@@ -18,7 +19,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <main className="flex flex-row w-screen">
-          <AppProvider>{children}</AppProvider>
+          <AppProvider>
+            {children}
+            <Analytics />
+          </AppProvider>
         </main>
       </body>
     </html>
