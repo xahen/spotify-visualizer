@@ -4,4 +4,4 @@ Visualizes your downloaded Spotify data, giving you interesting and nostalgic hi
 
 WIP - Fairly early build atm.
 
-[Try it out now](https://spotifyvisualizer.vercel.app/)
+[Try it out now!](https://spotifyvisualizer.vercel.app/)
