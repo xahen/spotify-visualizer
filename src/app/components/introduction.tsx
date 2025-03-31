@@ -1,4 +1,5 @@
 import { ZipUpload } from "@/app/components/upload";
+import { FaGithub } from "react-icons/fa6";
 export const WelcomePage = () => {
   return (
     <>
@@ -92,6 +93,19 @@ export const WelcomePage = () => {
         </h3>
 
         <ZipUpload />
+      </section>
+      <section className="mt-6 text-spotifygreen flex justify-end">
+        <p className="text-sm mr-2">
+          <span>&copy;</span> Oliver Borg
+        </p>
+        <a
+          href="https://github.com/xahen/spotify-visualizer"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-0.5"
+        >
+          <FaGithub />
+        </a>
       </section>
     </>
   );

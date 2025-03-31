@@ -29,6 +29,8 @@ import {
 import { Bar, getElementAtEvent } from "react-chartjs-2";
 import { monthToNumber } from "@/lib/data";
 
+import { FaGithub } from "react-icons/fa6";
+
 /* eslint react-hooks/exhaustive-deps: "off" */
 
 // set default chartjs options for better visuals
@@ -169,7 +171,7 @@ export const StatsOverview = () => {
     <>
       <section className="flex flex-row m-auto">
         {/* top songs */}
-        <div className="bg-spotifyblack m-4 p-4 w-[40vw] h-[35vh] rounded-3xl overflow-hidden">
+        <div className="bg-spotifyblack m-2 p-4 w-[42vw] h-[45vh] rounded-3xl overflow-y-auto">
           <h1 className="text-2xl text-center text-spotifygreen">
             Your top songs
           </h1>
@@ -184,7 +186,7 @@ export const StatsOverview = () => {
         </div>
 
         {/* top artists */}
-        <div className="bg-spotifyblack m-4 p-4 w-[40vw] h-[35vh] rounded-3xl overflow-hidden">
+        <div className="bg-spotifyblack m-2 p-4 w-[42vw] h-[45vh] rounded-3xl overflow-y-auto">
           <h1 className="text-2xl text-center text-spotifygreen">
             Your top artists
           </h1>
@@ -200,7 +202,7 @@ export const StatsOverview = () => {
       </section>
 
       {/* total listening time */}
-      <section className="m-auto bg-spotifyblack p-4 w-[82vw] h-[45vh] rounded-3xl">
+      <section className="relative m-auto bg-spotifyblack p-4 w-[85vw] h-[45vh] rounded-3xl">
         <div className="relative w-full">
           {(barState === "month" || barState === "day") && (
             <button
@@ -222,21 +224,44 @@ export const StatsOverview = () => {
 
         {/* fairly convoluted implementation */}
         {/* renders total listening time with all factors accounted for */}
-        <h2 className="text-lg mt-4 text-center text-spotifygreen">
-          {years > 0 ? (years > 1 ? years + " years" : years + " year") : null}{" "}
-          {days > 0 ? (days > 1 ? days + " days" : days + " day") : null}{" "}
-          {hours > 0 ? (hours > 1 ? hours + " hours" : hours + " hour") : null}{" "}
-          {minutes > 0
-            ? minutes > 1
-              ? minutes + " minutes"
-              : minutes + " minute"
-            : null}{" "}
-          {seconds > 0
-            ? seconds > 1
-              ? seconds + " seconds"
-              : seconds + " second"
-            : null}
-        </h2>
+        <div className="relative">
+          <h2 className="text-lg mt-1 text-center text-spotifygreen">
+            {years > 0
+              ? years > 1
+                ? years + " years"
+                : years + " year"
+              : null}{" "}
+            {days > 0 ? (days > 1 ? days + " days" : days + " day") : null}{" "}
+            {hours > 0
+              ? hours > 1
+                ? hours + " hours"
+                : hours + " hour"
+              : null}{" "}
+            {minutes > 0
+              ? minutes > 1
+                ? minutes + " minutes"
+                : minutes + " minute"
+              : null}{" "}
+            {seconds > 0
+              ? seconds > 1
+                ? seconds + " seconds"
+                : seconds + " second"
+              : null}
+          </h2>
+          <section className="absolute top-0 right-0 mt-1 text-spotifygreen flex justify-end">
+            <p className="text-sm mr-2">
+              <span>&copy;</span> Oliver Borg
+            </p>
+            <a
+              href="https://github.com/xahen/spotify-visualizer"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-0.5"
+            >
+              <FaGithub />
+            </a>
+          </section>
+        </div>
       </section>
     </>
   );
