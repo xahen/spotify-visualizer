@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useRef, useMemo, useEffect } from "react";
-import { useRouter } from "next/navigation";
 // import the use of global states
 import { useAppContext } from "@/context/AppContext";
+
 // import all the needed data management functions
 import {
   sortSongByListens,
@@ -14,6 +14,10 @@ import {
   calculateMonthlyCount,
   calculateDailyCount,
 } from "@/lib/datamanagement";
+import { monthToNumber } from "@/lib/data";
+
+import { FaGithub } from "react-icons/fa6";
+
 // import chartjs and other related things
 // do i need to import all of these? or can i find a way around it
 // seems kind of stupid
@@ -27,9 +31,8 @@ import {
   Legend,
 } from "chart.js";
 import { Bar, getElementAtEvent } from "react-chartjs-2";
-import { monthToNumber } from "@/lib/data";
 
-import { FaGithub } from "react-icons/fa6";
+import { NoData } from "@/app/components/nodata";
 
 /* eslint react-hooks/exhaustive-deps: "off" */
 
@@ -37,18 +40,15 @@ import { FaGithub } from "react-icons/fa6";
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
 defaults.color = "#FFFFFF";
-//defaults.backgroundColor = "rgba(255, 255, 255, 0.2)";
 defaults.borderColor = "rgba(255, 255, 255, 0.2)";
 
 // i needed this to make it work - but i want to find a way around it
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 export const StatsOverview = () => {
-  const router = useRouter();
-
   // global states
   const { songData, artistData, listeningEvents } = useAppContext();
-
+  // local states
   const [chartData, setChartData] = useState<{
     labels: string[];
     dataPoints: number[];
@@ -57,10 +57,10 @@ export const StatsOverview = () => {
     labels: string[];
     dataPoints: number[];
   }>({ labels: [], dataPoints: [] });
-
-  const chartRef = useRef<ChartJS<"bar"> | null | undefined>(null);
   const [barState, setBarState] = useState<string>("year");
   const [trackYear, setTrackYear] = useState<string>("");
+  // reference to bar chart
+  const chartRef = useRef<ChartJS<"bar"> | null | undefined>(null);
 
   // organizing data from all the data management functions
   const sortedSongs = sortSongByListens(songData);
@@ -72,28 +72,28 @@ export const StatsOverview = () => {
   // the keys are the date and the values are the count (songs played)
   const aggregatedData = aggregateData(listeningEvents);
 
-  // specify it to every year
+  // get the song count for every year
   const yearlyCount = calculateYearlyCount(aggregatedData);
 
+  // useEffect is used so the setChartData state isn't updated constantly, as it was causing crashes
   useEffect(() => {
     setChartData(yearlyCount);
   }, []);
 
-  // specify it to every month in a specific year
-  //const monthlyCount = calculateMonthlyCount(aggregatedData, "2023");
-
-  // specify it to every day in a specific month in a specific year
-  //const dailyCount = calculateDailyCount(aggregatedData, "2023", "03");
-
+  // function that is called when the bar chart is clicked
+  // gets the element (bar) that was clicked on, then uses the label of that bar to flatten the correct data
   const handleBarClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    // return of the bar chart doesn't exist
     if (!chartRef.current) return;
 
+    // get an array of all the elements in the bar chart - this is a built-in react-chartjs-2 function
     const elements = getElementAtEvent(chartRef.current, event);
 
     if (elements.length > 0) {
+      // gets the label of the clicked element
       const index = elements[0].index;
-      console.log("Clicked on:", chartData.labels[index]);
 
+      // flattens data to a specified year, showing the months of that year
       if (barState === "year") {
         const monthlyCount = calculateMonthlyCount(
           aggregatedData,
@@ -103,7 +103,9 @@ export const StatsOverview = () => {
         setBarState("month");
         setTrackYear(chartData.labels[index]);
         setMonthData(monthlyCount);
-      } else if (barState === "month") {
+      }
+      // flattens data to a specified month, showing the days of that month
+      else if (barState === "month") {
         const monthNumber = monthToNumber[chartData.labels[index]];
         const dailyCount = calculateDailyCount(
           aggregatedData,
@@ -116,6 +118,7 @@ export const StatsOverview = () => {
     }
   };
 
+  // conditionally rendered button that takes the user back to 1 level of abstraction higher
   const backButton = () => {
     if (barState === "month") {
       setBarState("year");
@@ -126,6 +129,7 @@ export const StatsOverview = () => {
     }
   };
 
+  // useMemo used for optimization
   const barData = useMemo(
     () => ({
       labels: chartData.labels,
@@ -140,28 +144,13 @@ export const StatsOverview = () => {
     [chartData]
   );
 
+  // failsafe for when '/stats' is accessed without uploaded data
   if (
     Object.entries(songData).length < 1 ||
     Object.entries(artistData).length < 1 ||
     listeningEvents.length < 1
   ) {
-    return (
-      <section className="flex h-screen w-screen">
-        <div className="m-auto flex flex-col justify-center">
-          <h1 className="text-3xl text-spotifygreen">
-            No data has been uploaded...
-          </h1>
-          <div className="w-full flex mt-2">
-            <button
-              className="m-auto border-2 border-spotifygreen px-2 py-1 rounded-3xl text-xl hover:bg-white/30"
-              onClick={() => router.push("/")}
-            >
-              Go back
-            </button>
-          </div>
-        </div>
-      </section>
-    );
+    return <NoData />;
   }
 
   // summary cards
