@@ -161,7 +161,7 @@ export const StatsOverview = () => {
       <section className="flex flex-row m-auto">
         {/* top songs */}
         <div className="bg-spotifyblack m-2 p-4 w-[42vw] h-[45vh] rounded-3xl overflow-y-auto">
-          <h1 className="text-2xl text-center text-spotifygreen">
+          <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
             Your top songs
           </h1>
 
@@ -176,7 +176,7 @@ export const StatsOverview = () => {
 
         {/* top artists */}
         <div className="bg-spotifyblack m-2 p-4 w-[42vw] h-[45vh] rounded-3xl overflow-y-auto">
-          <h1 className="text-2xl text-center text-spotifygreen">
+          <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
             Your top artists
           </h1>
 
@@ -201,7 +201,7 @@ export const StatsOverview = () => {
               Back
             </button>
           )}
-          <h1 className="text-2xl text-center text-spotifygreen">
+          <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
             Your total listening time
           </h1>
         </div>
@@ -214,7 +214,7 @@ export const StatsOverview = () => {
         {/* fairly convoluted implementation */}
         {/* renders total listening time with all factors accounted for */}
         <div className="relative">
-          <h2 className="text-lg mt-1 text-center text-spotifygreen">
+          <h2 className="xl:text-xl lg:text-lg md:text-base sm:text-xs mt-1 text-center text-spotifygreen">
             {years > 0
               ? years > 1
                 ? years + " years"
