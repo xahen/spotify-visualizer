@@ -7,7 +7,7 @@ import { AppProvider } from "@/context/AppContext";
 
 export const metadata: Metadata = {
   title: "Spotify Data Visualizer",
-  description: "Coded by Oliver Borg",
+  description: "Spotify Wrapped if it was good",
 };
 
 export default function RootLayout({
