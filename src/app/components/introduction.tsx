@@ -5,19 +5,21 @@ export const WelcomePage = () => {
     <>
       {/* introduction */}
       <section>
-        <h1 className="text-4xl font-bold text-spotifygreen">
+        <h1 className="xl:text-4xl lg:text-2xl md:text-lxl font-bold text-spotifygreen">
           Welcome to the Spotify data visualizer site!
         </h1>
 
-        <h2 className="mt-2 text-2xl italic">
+        <h2 className="mt-2 xl:text-2xl lg:text-xl md:text-lg italic">
           This site allows you to graphically visualize your Spotify data.
         </h2>
       </section>
 
       {/* features */}
       <section className="mt-4">
-        <p className="text-lg font-bold text-spotifygreen">Features include:</p>
-        <ul className="text-base list-disc ml-8 marker:text-spotifygreen">
+        <p className="xl:text-lg lg:text-base md:text-sm font-bold text-spotifygreen">
+          Features include:
+        </p>
+        <ul className="xl:text-base lg:text-sm md:text-xs list-disc ml-8 marker:text-spotifygreen">
           <li>Seeing your most played songs ever.</li>
           <li>Seeing your most listened to artists ever.</li>
           <li>
@@ -31,12 +33,14 @@ export const WelcomePage = () => {
 
       {/* instructions */}
       <section className="mt-8">
-        <h3 className="text-2xl font-bold text-spotifygreen">
+        <h3 className="xl:text-2xl lg:text-xl md:text-lg font-bold text-spotifygreen">
           How to get started:
         </h3>
 
-        <div className="mt-2 ml-4">
-          <h4 className="text-lg font-bold text-spotifygreen">First</h4>
+        <div className="xl:text-base lg:text-sm md:text-xs mt-2 ml-4">
+          <h4 className="xl:text-lg lg:text-base md:text-sm font-bold text-spotifygreen">
+            First
+          </h4>
           <p>
             Download your Spotify account data from
             <a
@@ -56,7 +60,9 @@ export const WelcomePage = () => {
 
           <p>It might take a few days for Spotify to prepare your data.</p>
 
-          <h4 className="mt-2 text-lg font-bold text-spotifygreen">Second</h4>
+          <h4 className="mt-2 xl:text-lg lg:text-base md:text-sm font-bold text-spotifygreen">
+            Second
+          </h4>
           <p>
             Upload the &apos;.zip&apos; files that you downloaded from Spotify
             to this website.
@@ -66,7 +72,9 @@ export const WelcomePage = () => {
             this page.
           </p>
 
-          <h4 className="mt-2 text-lg font-bold text-spotifygreen">Third</h4>
+          <h4 className="mt-2 xl:text-lg lg:text-base md:text-sm font-bold text-spotifygreen">
+            Third
+          </h4>
           <p>
             Enjoy going through a beautiful and nostalgic trip of your listening
             habits!
@@ -75,8 +83,10 @@ export const WelcomePage = () => {
       </section>
 
       <section className="mt-8">
-        <h3 className="text-2xl font-bold text-spotifygreen">IMPORTANT:</h3>
-        <div className="ml-4 text-lg italic">
+        <h3 className="xl:text-2xl lg:text-xl md:text-lg font-bold text-spotifygreen">
+          IMPORTANT:
+        </h3>
+        <div className="ml-4 xl:text-lg lg:text-base md:text-sm italic">
           <p>
             Currently, only the &apos;Extended streaming history&apos; data is
             supported.
@@ -88,13 +98,13 @@ export const WelcomePage = () => {
 
       {/* upload section */}
       <section className="mt-8">
-        <h3 className="text-2xl font-bold text-spotifygreen">
+        <h3 className="xl:text-2xl lg:text-xl md:text-lg font-bold text-spotifygreen">
           Upload your Spotify data:
         </h3>
 
         <ZipUpload />
       </section>
-      <section className="mt-6 text-spotifygreen flex justify-end">
+      <section className="mt-4 text-spotifygreen flex justify-end">
         <p className="text-sm mr-2">
           <span>&copy;</span> Oliver Borg
         </p>

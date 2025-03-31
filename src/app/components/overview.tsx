@@ -161,11 +161,11 @@ export const StatsOverview = () => {
       <section className="flex flex-row m-auto">
         {/* top songs */}
         <div className="bg-spotifyblack m-2 p-4 w-[42vw] h-[45vh] rounded-3xl overflow-y-auto">
-          <h1 className="text-2xl text-center text-spotifygreen">
+          <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
             Your top songs
           </h1>
 
-          <ul className="mt-4 ml-4 list-decimal list-inside marker:text-spotifygreen">
+          <ul className="mt-4 ml-6 list-decimal list-inside marker:text-spotifygreen xl:text-2xl lg:text-xl md:text-base sm:text-sm">
             {sortedSongs.slice(0, 10).map((song) => (
               <li key={song.name}>
                 {song.artist} - {song.name} ({song.times_listened})
@@ -176,11 +176,11 @@ export const StatsOverview = () => {
 
         {/* top artists */}
         <div className="bg-spotifyblack m-2 p-4 w-[42vw] h-[45vh] rounded-3xl overflow-y-auto">
-          <h1 className="text-2xl text-center text-spotifygreen">
+          <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
             Your top artists
           </h1>
 
-          <ul className="mt-4 ml-4 list-decimal list-inside marker:text-spotifygreen">
+          <ul className="mt-4 ml-6 list-decimal list-inside marker:text-spotifygreen xl:text-2xl lg:text-xl md:text-base sm:text-sm">
             {sortedArtists.slice(0, 10).map((artist) => (
               <li key={artist.name}>
                 {artist.name} ({artist.songs_played})
@@ -201,7 +201,7 @@ export const StatsOverview = () => {
               Back
             </button>
           )}
-          <h1 className="text-2xl text-center text-spotifygreen">
+          <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
             Your total listening time
           </h1>
         </div>
@@ -214,7 +214,7 @@ export const StatsOverview = () => {
         {/* fairly convoluted implementation */}
         {/* renders total listening time with all factors accounted for */}
         <div className="relative">
-          <h2 className="text-lg mt-1 text-center text-spotifygreen">
+          <h2 className="xl:text-xl lg:text-lg md:text-base sm:text-xs mt-1 text-center text-spotifygreen">
             {years > 0
               ? years > 1
                 ? years + " years"
