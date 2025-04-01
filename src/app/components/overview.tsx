@@ -207,7 +207,7 @@ export const StatsOverview = () => {
                 Your total listening time
               </h1>
             </div>
-            <div className="h-[80%] mt-2">
+            <div className="h-[43vh] mt-2">
               {/* songs played bar chart */}
               {/* find a way to change between yearly and monthly bar charts */}
               <Bar ref={chartRef} data={barData} onClick={handleBarClick} />
