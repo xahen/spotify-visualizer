@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <main className="flex flex-row w-screen">
+        <main className="flex flex-col h-screen w-screen">
           <AppProvider>
             {children}
             <Analytics />

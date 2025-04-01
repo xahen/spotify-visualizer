@@ -158,100 +158,104 @@ export const StatsOverview = () => {
   return (
     // top summary cards
     <>
-      <section className="flex flex-row m-auto">
-        {/* top songs */}
-        <div className="bg-spotifyblack m-2 p-4 w-[42vw] h-[45vh] rounded-3xl overflow-y-auto">
-          <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
-            Your top songs
-          </h1>
+      <div className="flex flex-col h-full w-full">
+        <section className="flex flex-row m-auto h-fit w-[85vw]">
+          {/* top songs */}
+          <div className="bg-spotifyblack mr-2 p-4 w-full h-full rounded-3xl overflow-y-auto">
+            <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
+              Your top songs
+            </h1>
 
-          <ul className="mt-4 ml-6 list-decimal list-inside marker:text-spotifygreen xl:text-2xl lg:text-xl md:text-base sm:text-sm">
-            {sortedSongs.slice(0, 10).map((song) => (
-              <li key={song.name}>
-                {song.artist} - {song.name} ({song.times_listened})
-              </li>
-            ))}
-          </ul>
-        </div>
+            <ul className="mt-4 ml-6 list-decimal list-inside marker:text-spotifygreen xl:text-xl lg:text-lg md:text-base sm:text-sm">
+              {sortedSongs.slice(0, 10).map((song) => (
+                <li key={song.name}>
+                  {song.artist} - {song.name} ({song.times_listened})
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        {/* top artists */}
-        <div className="bg-spotifyblack m-2 p-4 w-[42vw] h-[45vh] rounded-3xl overflow-y-auto">
-          <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
-            Your top artists
-          </h1>
+          {/* top artists */}
+          <div className="bg-spotifyblack ml-2 p-4 w-full h-full rounded-3xl overflow-y-auto">
+            <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
+              Your top artists
+            </h1>
 
-          <ul className="mt-4 ml-6 list-decimal list-inside marker:text-spotifygreen xl:text-2xl lg:text-xl md:text-base sm:text-sm">
-            {sortedArtists.slice(0, 10).map((artist) => (
-              <li key={artist.name}>
-                {artist.name} ({artist.songs_played})
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+            <ul className="mt-4 ml-6 list-decimal list-inside marker:text-spotifygreen xl:text-xl lg:text-lg md:text-base sm:text-sm">
+              {sortedArtists.slice(0, 10).map((artist) => (
+                <li key={artist.name}>
+                  {artist.name} ({artist.songs_played})
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
 
-      {/* total listening time */}
-      <section className="relative m-auto bg-spotifyblack p-4 w-[85vw] h-[45vh] rounded-3xl">
-        <div className="relative w-full">
-          {(barState === "month" || barState === "day") && (
-            <button
-              className="absolute -top-1 border-2 border-spotifygreen px-2 py-0.5 text-2xl rounded-3xl hover:bg-white/30"
-              onClick={backButton}
-            >
-              Back
-            </button>
-          )}
-          <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
-            Your total listening time
-          </h1>
-        </div>
-        <div className="h-[80%] mt-2">
-          {/* songs played bar chart */}
-          {/* find a way to change between yearly and monthly bar charts */}
-          <Bar ref={chartRef} data={barData} onClick={handleBarClick} />
-        </div>
+        {/* total listening time */}
+        <section className="relative flex h-fit m-auto">
+          <div className="bg-spotifyblack p-4 w-[85vw] h-fit rounded-3xl mt-4">
+            <div className="relative w-full">
+              {(barState === "month" || barState === "day") && (
+                <button
+                  className="absolute -top-1 border-2 border-spotifygreen px-2 py-0.5 text-2xl rounded-3xl hover:bg-white/30"
+                  onClick={backButton}
+                >
+                  Back
+                </button>
+              )}
+              <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
+                Your total listening time
+              </h1>
+            </div>
+            <div className="h-[80%] mt-2">
+              {/* songs played bar chart */}
+              {/* find a way to change between yearly and monthly bar charts */}
+              <Bar ref={chartRef} data={barData} onClick={handleBarClick} />
+            </div>
 
-        {/* fairly convoluted implementation */}
-        {/* renders total listening time with all factors accounted for */}
-        <div className="relative">
-          <h2 className="xl:text-xl lg:text-lg md:text-base sm:text-xs mt-1 text-center text-spotifygreen">
-            {years > 0
-              ? years > 1
-                ? years + " years"
-                : years + " year"
-              : null}{" "}
-            {days > 0 ? (days > 1 ? days + " days" : days + " day") : null}{" "}
-            {hours > 0
-              ? hours > 1
-                ? hours + " hours"
-                : hours + " hour"
-              : null}{" "}
-            {minutes > 0
-              ? minutes > 1
-                ? minutes + " minutes"
-                : minutes + " minute"
-              : null}{" "}
-            {seconds > 0
-              ? seconds > 1
-                ? seconds + " seconds"
-                : seconds + " second"
-              : null}
-          </h2>
-          <section className="absolute top-0 right-0 mt-1 text-spotifygreen flex justify-end">
-            <p className="text-sm mr-2">
-              <span>&copy;</span> Oliver Borg
-            </p>
-            <a
-              href="https://github.com/xahen/spotify-visualizer"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-0.5"
-            >
-              <FaGithub />
-            </a>
-          </section>
-        </div>
-      </section>
+            {/* fairly convoluted implementation */}
+            {/* renders total listening time with all factors accounted for */}
+            <div className="relative">
+              <h2 className="xl:text-xl lg:text-lg md:text-base sm:text-xs mt-1 text-center text-spotifygreen">
+                {years > 0
+                  ? years > 1
+                    ? years + " years"
+                    : years + " year"
+                  : null}{" "}
+                {days > 0 ? (days > 1 ? days + " days" : days + " day") : null}{" "}
+                {hours > 0
+                  ? hours > 1
+                    ? hours + " hours"
+                    : hours + " hour"
+                  : null}{" "}
+                {minutes > 0
+                  ? minutes > 1
+                    ? minutes + " minutes"
+                    : minutes + " minute"
+                  : null}{" "}
+                {seconds > 0
+                  ? seconds > 1
+                    ? seconds + " seconds"
+                    : seconds + " second"
+                  : null}
+              </h2>
+              <div className="absolute top-0 right-0 mt-1 text-spotifygreen flex justify-end">
+                <p className="text-sm mr-2">
+                  <span>&copy;</span> Oliver Borg
+                </p>
+                <a
+                  href="https://github.com/xahen/spotify-visualizer"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-0.5"
+                >
+                  <FaGithub />
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </>
   );
 };
