@@ -160,7 +160,7 @@ export const StatsOverview = () => {
     <>
       <section className="flex flex-row m-auto">
         {/* top songs */}
-        <div className="bg-spotifyblack m-2 p-4 w-[42vw] h-[45vh] rounded-3xl overflow-y-auto">
+        <div className="bg-spotifyblack m-2 p-4 w-[42vw] h-fit rounded-3xl overflow-y-auto">
           <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
             Your top songs
           </h1>
@@ -175,7 +175,7 @@ export const StatsOverview = () => {
         </div>
 
         {/* top artists */}
-        <div className="bg-spotifyblack m-2 p-4 w-[42vw] h-[45vh] rounded-3xl overflow-y-auto">
+        <div className="bg-spotifyblack m-2 p-4 w-[42vw] h-fit rounded-3xl overflow-y-auto">
           <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
             Your top artists
           </h1>
