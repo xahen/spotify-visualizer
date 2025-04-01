@@ -165,7 +165,7 @@ export const StatsOverview = () => {
             Your top songs
           </h1>
 
-          <ul className="mt-4 ml-6 list-decimal list-inside marker:text-spotifygreen xl:text-2xl lg:text-xl md:text-base sm:text-sm">
+          <ul className="mt-4 ml-6 list-decimal list-inside marker:text-spotifygreen xl:text-xl lg:text-lg md:text-base sm:text-sm">
             {sortedSongs.slice(0, 10).map((song) => (
               <li key={song.name}>
                 {song.artist} - {song.name} ({song.times_listened})
@@ -180,7 +180,7 @@ export const StatsOverview = () => {
             Your top artists
           </h1>
 
-          <ul className="mt-4 ml-6 list-decimal list-inside marker:text-spotifygreen xl:text-2xl lg:text-xl md:text-base sm:text-sm">
+          <ul className="mt-4 ml-6 list-decimal list-inside marker:text-spotifygreen xl:text-xl lg:text-lg md:text-base sm:text-sm">
             {sortedArtists.slice(0, 10).map((artist) => (
               <li key={artist.name}>
                 {artist.name} ({artist.songs_played})
