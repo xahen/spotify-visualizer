@@ -197,7 +197,7 @@ export const StatsOverview = () => {
             <div className="relative w-full">
               {(barState === "month" || barState === "day") && (
                 <button
-                  className="absolute -top-1 border-2 border-spotifygreen px-2 py-0.5 text-2xl rounded-3xl hover:bg-white/30"
+                  className="absolute -top-1 border-2 border-spotifygreen px-2 py-0.5 text-2xl rounded-3xl hover:bg-white/30 hover:cursor-pointer"
                   onClick={backButton}
                 >
                   Back

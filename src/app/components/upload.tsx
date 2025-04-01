@@ -39,7 +39,7 @@ export const ZipUpload = () => {
               router
             )
           }
-          className="p-2 w-fit border-2 border-spotifygreen xl:text-base lg:text-sm md:text-xs"
+          className="p-2 w-fit border-2 border-spotifygreen xl:text-base lg:text-sm md:text-xs hover:cursor-pointer"
         />
       </div>
     </div>
