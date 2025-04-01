@@ -159,9 +159,9 @@ export const StatsOverview = () => {
     // top summary cards
     <>
       <div className="flex flex-col h-full w-full">
-        <section className="flex flex-row m-auto h-fit">
+        <section className="flex flex-row m-auto h-fit w-[85vw]">
           {/* top songs */}
-          <div className="bg-spotifyblack mr-2 p-4 w-[42vw] h-full rounded-3xl overflow-y-auto">
+          <div className="bg-spotifyblack mr-2 p-4 w-full h-full rounded-3xl overflow-y-auto">
             <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
               Your top songs
             </h1>
@@ -176,7 +176,7 @@ export const StatsOverview = () => {
           </div>
 
           {/* top artists */}
-          <div className="bg-spotifyblack ml-2 p-4 w-[42vw] h-full rounded-3xl overflow-y-auto">
+          <div className="bg-spotifyblack ml-2 p-4 w-full h-full rounded-3xl overflow-y-auto">
             <h1 className="xl:text-4xl lg:text-2xl md:text-xl sm:text-lg text-center text-spotifygreen">
               Your top artists
             </h1>
@@ -192,8 +192,8 @@ export const StatsOverview = () => {
         </section>
 
         {/* total listening time */}
-        <section className="relative flex h-fit m-auto ">
-          <div className="bg-spotifyblack p-4 w-[85vw] h-full rounded-3xl mt-4">
+        <section className="relative flex h-fit m-auto">
+          <div className="bg-spotifyblack p-4 w-[85vw] h-fit rounded-3xl mt-4">
             <div className="relative w-full">
               {(barState === "month" || barState === "day") && (
                 <button
