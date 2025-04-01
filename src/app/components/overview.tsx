@@ -191,7 +191,7 @@ export const StatsOverview = () => {
       </section>
 
       {/* total listening time */}
-      <section className="relative m-auto bg-spotifyblack p-4 w-[85vw] h-[45vh] rounded-3xl">
+      <section className="relative m-auto bg-spotifyblack p-4 w-[85vw] h-fit rounded-3xl">
         <div className="relative w-full">
           {(barState === "month" || barState === "day") && (
             <button
