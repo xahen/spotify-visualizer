@@ -5,7 +5,7 @@ import {
   ArtistList,
   ListeningEvent,
 } from "@/lib/types";
-import { numberToMonth } from "@/lib/data";
+import { numberToMonth, dayNumberToString } from "@/lib/data";
 
 export const sortSongByListens = (songs: SongList = {}) => {
   const sortedSongs = Object.values(songs).sort(
@@ -59,6 +59,21 @@ export const aggregateData = (
 
     aggregatedList[year][month][day] =
       (aggregatedList[year][month][day] || 0) + 1;
+  });
+
+  Object.keys(aggregatedList).forEach((year) => {
+    Object.keys(numberToMonth).forEach((monthDate) => {
+      if (!aggregatedList[year][monthDate])
+        aggregatedList[year][monthDate] = {};
+    });
+
+    Object.keys(aggregatedList[year]).forEach((month) => {
+      const daysInMonth = dayjs(year + "/" + month).daysInMonth();
+      for (let i = 0; i < daysInMonth; i++) {
+        if (!aggregatedList[year][month][dayNumberToString[i]])
+          aggregatedList[year][month][dayNumberToString[i]] = 0;
+      }
+    });
   });
 
   return aggregatedList;
