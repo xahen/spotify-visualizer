@@ -61,6 +61,13 @@ export const aggregateData = (
       (aggregatedList[year][month][day] || 0) + 1;
   });
 
+  Object.keys(aggregatedList).forEach((year) => {
+    Object.keys(numberToMonth).forEach((monthDate) => {
+      if (!aggregatedList[year][monthDate])
+        aggregatedList[year][monthDate] = {};
+    });
+  });
+
   return aggregatedList;
 };
 
