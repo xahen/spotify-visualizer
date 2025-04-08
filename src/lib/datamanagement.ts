@@ -97,7 +97,9 @@ export const calculateYearlyCount = (aggregatedData: NestedAggregation) => {
     let totalCount = 0;
 
     Object.values(aggregatedData[year]).forEach((month) => {
-      console.log(Object.values(month));
+      Object.values(month).forEach((day) => {
+        console.log(day);
+      });
     });
 
     yearlyCount[year] = totalCount;
