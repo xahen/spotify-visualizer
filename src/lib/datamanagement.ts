@@ -80,7 +80,7 @@ export const aggregateData = (
       const daysInMonth = dayjs(year + "/" + month).daysInMonth();
       for (let i = 0; i < daysInMonth; i++) {
         if (!aggregatedList[year][month][dayNumberToString[i]])
-          aggregatedList[year][month][dayNumberToString[i]] = 0;
+          aggregatedList[year][month][dayNumberToString[i]] = {};
       }
     });
   });
