@@ -119,10 +119,12 @@ export const calculateMonthlyCount = (
   const monthlyCount: { [month: string]: number } = {};
 
   Object.keys(aggregatedData[year]).forEach((month) => {
-    monthlyCount[month] = Object.values(aggregatedData[year][month]).reduce(
-      (total: number, count: number) => total + count,
-      0
-    );
+    monthlyCount[month] = 0;
+    Object.values(aggregatedData[year][month]).forEach((day) => {
+      Object.values(day).forEach((entry) => {
+        monthlyCount[month] += entry.count;
+      });
+    });
   });
 
   const labels = Object.keys(monthlyCount).sort();
