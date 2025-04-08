@@ -147,7 +147,12 @@ export const calculateDailyCount = (
   const dailyCount: { [day: string]: number } = {};
 
   Object.keys(aggregatedData[year][month]).forEach((day) => {
-    dailyCount[day] = aggregatedData[year][month][day];
+    dailyCount[day] = 0;
+
+    Object.values(aggregatedData[year][month][day]).forEach((entry) => {
+      dailyCount[day] += entry.count;
+    });
+    //dailyCount[day] = aggregatedData[year][month][day];
   });
 
   const labels = Object.keys(dailyCount).sort();
