@@ -64,9 +64,11 @@ export const aggregateData = (
     if (entry in aggregatedList[year][month][day]) {
       aggregatedList[year][month][day][entry].count += 1;
     } else {
-      aggregatedList[year][month][day][entry].song = event.song;
-      aggregatedList[year][month][day][entry].artist = event.artist;
-      aggregatedList[year][month][day][entry].count = 1;
+      aggregatedList[year][month][day][entry] = {
+        song: event.song,
+        artist: event.artist,
+        count: 1,
+      };
     }
   });
 
@@ -95,10 +97,7 @@ export const calculateYearlyCount = (aggregatedData: NestedAggregation) => {
     let totalCount = 0;
 
     Object.values(aggregatedData[year]).forEach((month) => {
-      totalCount += Object.values(month).reduce(
-        (a: number, b: number) => a + b,
-        0
-      );
+      console.log(Object.values(month));
     });
 
     yearlyCount[year] = totalCount;
