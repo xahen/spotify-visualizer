@@ -34,8 +34,6 @@ import { Bar, getElementAtEvent } from "react-chartjs-2";
 
 import { NoData } from "@/app/components/nodata";
 
-/* eslint react-hooks/exhaustive-deps: "off" */
-
 // set default chartjs options for better visuals
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
@@ -70,15 +68,19 @@ export const StatsOverview = () => {
   // maybe give this a more descriptive name?
   // it aggregates the listeningEvents array to a collection of objects
   // the keys are the date and the values are the count (songs played)
-  const aggregatedData = aggregateData(listeningEvents);
+  const aggregatedData = useMemo(() => {
+    return aggregateData(listeningEvents);
+  }, [listeningEvents]);
 
   // get the song count for every year
-  const yearlyCount = calculateYearlyCount(aggregatedData);
+  const yearlyCount = useMemo(() => {
+    return calculateYearlyCount(aggregatedData);
+  }, [aggregatedData]);
 
   // useEffect is used so the setChartData state isn't updated constantly, as it was causing crashes
   useEffect(() => {
     setChartData(yearlyCount);
-  }, []);
+  }, [aggregatedData]);
 
   // function that is called when the bar chart is clicked
   // gets the element (bar) that was clicked on, then uses the label of that bar to flatten the correct data
