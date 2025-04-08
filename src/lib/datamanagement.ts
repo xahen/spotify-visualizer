@@ -52,13 +52,22 @@ export const aggregateData = (
     const year = date.format("YYYY");
     const month = date.format("MM");
     const day = date.format("DD");
+    const entry = event.artist + "-" + event.song;
 
     if (!aggregatedList[year]) aggregatedList[year] = {};
 
     if (!aggregatedList[year][month]) aggregatedList[year][month] = {};
 
-    aggregatedList[year][month][day] =
-      (aggregatedList[year][month][day] || 0) + 1;
+    if (!aggregatedList[year][month][day])
+      aggregatedList[year][month][day] = {};
+
+    if (entry in aggregatedList[year][month][day]) {
+      aggregatedList[year][month][day][entry].count += 1;
+    } else {
+      aggregatedList[year][month][day][entry].song = event.song;
+      aggregatedList[year][month][day][entry].artist = event.artist;
+      aggregatedList[year][month][day][entry].count = 1;
+    }
   });
 
   Object.keys(aggregatedList).forEach((year) => {
